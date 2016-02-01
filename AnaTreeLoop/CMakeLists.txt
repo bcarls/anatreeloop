@@ -1,8 +1,8 @@
 # get all the *.cxx filenames, to compile them into a lib
 file(GLOB SOME_PROJ_LIB_SRCS "${PROJECT_SOURCE_DIR}/AnaTreeLoop/*.cxx")
 # include ROOT library and include files
-include_directories(/usr/local/opt/root6/include/root/)
-link_directories(/usr/local/opt/root6/lib/root/)
+include_directories($ENV{ROOTINCLUDE})
+link_directories($ENV{ROOTLIB})
 
 include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS})
 add_definitions(${ROOT_CXX_FLAGS})
@@ -11,7 +11,7 @@ add_definitions(${ROOT_CXX_FLAGS})
 #   - ROOT built with classic configure/make use the provided $ROOTSYS/etc/cmake/FindROOT.cmake
 #   - ROOT built with CMake. Add in CMAKE_PREFIX_PATH the installation prefix for ROOT
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} /usr/local/opt/root6/etc/root/cmake/)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} $ENV{ROOTCMAKE})
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS MathCore RIO Hist Tree Net)
