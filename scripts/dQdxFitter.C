@@ -67,14 +67,30 @@ void dQdxFitter(){
   TFile *f = new TFile("AnaTreeLoopWireVariation.root");
   TCanvas *c1 = new TCanvas("c1","Tree test");
   TH1F *YWiredQdx = new TH1F("YWiredQdx","dQdx for Y Plane",3456,0,3456);
+  YWiredQdx->SetMaximum(500);
   YWiredQdx->SetMarkerStyle(2);
   YWiredQdx->SetMarkerSize(0.5);
   TH1F *UWiredQdx = new TH1F("UWiredQdx","dQdx for U Plane",2400,0,2400);
+  UWiredQdx->SetMaximum(300);
   UWiredQdx->SetMarkerStyle(2);
   UWiredQdx->SetMarkerSize(0.5);
   TH1F *VWiredQdx = new TH1F("VWiredQdx","dQdx for V Plane",2400,0,2400);
   VWiredQdx->SetMarkerStyle(2);
   VWiredQdx->SetMarkerSize(0.5);
+  VWiredQdx->SetMaximum(300);
+  
+  TH1F *YWiredQdxWidth = new TH1F("YWiredQdxWidth","dQdx Width for Y Plane",3456,0,3456);
+  YWiredQdxWidth->SetMarkerStyle(2);
+  YWiredQdxWidth->SetMarkerSize(0.5);
+  YWiredQdxWidth->SetMaximum(200);
+  TH1F *UWiredQdxWidth  = new TH1F("UWiredQdxWidth","dQdx Width for U Plane",2400,0,2400);
+  UWiredQdxWidth->SetMaximum(200);
+  UWiredQdxWidth->SetMarkerStyle(2);
+  UWiredQdxWidth->SetMarkerSize(0.5);
+  TH1F *VWiredQdxWidth  = new TH1F("VWiredQdxWidth","dQdx Width for V Plane",2400,0,2400);
+  VWiredQdxWidth->SetMaximum(200);
+  VWiredQdxWidth->SetMarkerStyle(2);
+  VWiredQdxWidth->SetMarkerSize(0.5);
 
   gStyle->SetOptFit(1111);
   
@@ -82,7 +98,7 @@ void dQdxFitter(){
   for(int i=0; i < 3456; i++){
   // for(int i=1000; i < 1010; i++){
     TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/y_plane/hYPlanedQdx_"+(TString)Form("%d",i));
-    
+
     // Make sure we have a good number of entries before fitting
     if(hdQdx->GetEntries() < 100){
       YWiredQdx->SetBinContent(i+1,0);
@@ -103,19 +119,25 @@ void dQdxFitter(){
     landaugaus->Draw("SAME");
     // if(landaugaus->GetParameter(1) > 0 && 
     //     landaugaus->GetProb() > 0.01)
-    if(landaugaus->GetParameter(1) > 0)
+    if(landaugaus->GetParameter(1) > 0){
       YWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+      YWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
+    }
     c1->Print("hYPlanedQdx_"+(TString)Form("%d",i)+".png");
   }
 
   YWiredQdx->Draw("P");
   c1->Print("YPlanedQdx.png");
   c1->Print("YPlanedQdx.C");
+  YWiredQdxWidth->Draw("P");
+  c1->Print("YPlanedQdxWidth.png");
+  c1->Print("YPlanedQdxWidth.C");
 
 
 
   // Do the U Plane
   for(int i=0; i < 2400; i++){
+  // for(int i=1000; i < 1010; i++){
     TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/u_plane/hUPlanedQdx_"+(TString)Form("%d",i));
     
     // Make sure we have a good number of entries before fitting
@@ -137,20 +159,25 @@ void dQdxFitter(){
     landaugaus->Draw("SAME");
     // if(landaugaus->GetParameter(1) > 0 && 
     //     landaugaus->GetProb() > 0.01)
-    if(landaugaus->GetParameter(1) > 0)
+    if(landaugaus->GetParameter(1) > 0){
       UWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+      UWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
+    }
     c1->Print("hUPlanedQdx_"+(TString)Form("%d",i)+".png");
   }
 
   UWiredQdx->Draw("P");
   c1->Print("UPlanedQdx.png");
   c1->Print("UPlanedQdx.C");
+  UWiredQdxWidth->Draw("P");
+  c1->Print("UPlanedQdxWidth.png");
+  c1->Print("UPlanedQdxWidth.C");
 
 
 
   // Do the V Plane
   for(int i=0; i < 2400; i++){
-  // for(int i=200; i < 500; i++){
+  // for(int i=1000; i < 1010; i++){
     TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/v_plane/hVPlanedQdx_"+(TString)Form("%d",i));
     
     // Make sure we have a good number of entries before fitting
@@ -172,14 +199,19 @@ void dQdxFitter(){
     landaugaus->Draw("SAME");
     // if(landaugaus->GetParameter(1) > 0 && 
     //     landaugaus->GetProb() > 0.01)
-    if(landaugaus->GetParameter(1) > 0)
+    if(landaugaus->GetParameter(1) > 0){
       VWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+      VWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
+    }
     c1->Print("hVPlanedQdx_"+(TString)Form("%d",i)+".png");
   }
 
   VWiredQdx->Draw("P");
   c1->Print("VPlanedQdx.png");
   c1->Print("VPlanedQdx.C");
+  VWiredQdxWidth->Draw("P");
+  c1->Print("VPlanedQdxWidth.png");
+  c1->Print("VPlanedQdxWidth.C");
 
 }
 
