@@ -1,4 +1,6 @@
-# anatreeloop
+# AnaTreeLoop
+
+This is a simple set of macros for looking at AnalysisTree files. It is currently configured to use ROOT 6 and relies on CMake for building. Compilation is not necessary though. Details on avoiding it appear below. 
 
 ## To build on OSX 
 
@@ -50,13 +52,42 @@ cd build
 make
 ```
 
-### Running the code
+## Running the code
 
-To run the code using the AnaTreeLoopData module, do the following using python:
+To run the code using the AnaTreeLoopData module and the compiled library, do the following using python:
 
 ```bash
 python scripts/run_AnaTreeLoopData.py -s anatreefile.root
 ```
+
+To run the code without compilation, the Python script needs slight modification, replacing this line in run_AnaTreeLoopData.py:
+
+```python
+ROOT.gSystem.Load("build/AnaTreeLoop/libAnaTreeLoop")
+```
+
+with these:
+
+```python
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeTracks.cxx");
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeFlash.cxx");
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeVertex.cxx");
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeTruth.cxx");
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeAlgs.cxx");
+ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeLoopData.cxx");
+```
+
+I also have an example Python script that does not need compilation here:
+
+```bash
+scripts/run_AnaTreeLoopDataNoCompile.py
+```
+
+
+
+
+
+
 
 
 
