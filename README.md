@@ -1,16 +1,45 @@
 # anatreeloop
 
-Setup root6. To checkout and build:
+## To build and run on OSX 
 
-`git clone https://github.com/bcarls/anatreeloop`
+The easy way to get going is to install ROOT6 via [Homebrew](http://brew.sh/) using the following steps:
 
-`cd anatreeloop`
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install homebrew/science/root6
+git clone git@github.com:bcarls/anatreeloop.git
+cd anatreeloop
+source setup_homebrew.sh
+mkdir build
+cd build
+cmake ..
+make
+```
 
-`mkdir build`
+To make changes subsequently:
 
-`cd build`
+```bash
+cd build
+make
+```
 
-`cmake ..`
+To run the code using the AnaTreeLoopData module, do the following using python:
 
-`make`
-  
+```bash
+python scripts/run_AnaTreeLoopData.py -s anatreefile.root
+```
+
+When starting with a fresh login, setup everything with this:
+
+```bash
+source setup_homebrew.sh
+```
+
+## To build and run on the gpvm nodes
+
+
+
+
+
+
+
