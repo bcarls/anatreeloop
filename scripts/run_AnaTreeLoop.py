@@ -6,11 +6,7 @@ import sys
 
 def main(argv):
 
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeTracks.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeVertex.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeTruth.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeAlgs.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoop/AnaTreeLoop.cxx");
+    ROOT.gSystem.Load("build/AnaTreeLoop/libAnaTreeLoop")
 
     inputFile = ''
     inputFileList = ''

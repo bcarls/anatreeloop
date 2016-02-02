@@ -6,8 +6,7 @@ import sys
 
 def main(argv):
 
-
-    ROOT.gSystem.Load("build/AnaTreeLoop/libAnaTreeLoop.dylib")
+    ROOT.gSystem.Load("build/AnaTreeLoop/libAnaTreeLoop")
 
     inputFile = ''
     inputFileList = ''
