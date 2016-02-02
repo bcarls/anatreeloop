@@ -4,5 +4,5 @@ setup cmake v3_3_2
 export ROOTINCLUDE=$ROOTSYS"/include/"
 export ROOTLIB=$ROOTSYS"/lib/"
 export ROOTCMAKE=$ROOTSYS"/etc/cmake"
-export CC=/grid/fermiapp/products/larsoft/gcc/v4_9_2/Linux64bit+2.6-2.12/bin/gcc
-export CXX=/grid/fermiapp/products/larsoft/gcc/v4_9_2/Linux64bit+2.6-2.12/bin/g++
+export CC=`which gcc`
+export CXX=`which g++`
