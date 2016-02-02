@@ -15,3 +15,31 @@ cd build
 cmake ..
 make
 ```
+
+To make changes subsequently:
+
+```bash
+cd build
+make
+```
+
+To run the code using the AnaTreeLoopData module, do the following using python:
+
+```bash
+python scripts/run_AnaTreeLoopData.py -s anatreefile.root
+```
+
+When starting with a fresh login, setup everything with this:
+
+```bash
+source setup_homebrew.sh
+```
+
+## To build and run on the gpvm nodes
+
+
+
+
+
+
+
