@@ -8,8 +8,9 @@ The easy way to get going is to install ROOT6 via [Homebrew](http://brew.sh/) us
 2. `brew install homebrew/science/root6`
 3. `git clone git@github.com:bcarls/anatreeloop.git`
 4. `cd anatreeloop`
-5. `mkdir build`
-6. `cd build`
-7. `cmake ..`
-8. `make`
+5. `source setup_homebrew.sh`
+6. `mkdir build`
+7. `cd build`
+8. `cmake ..`
+9. `make`
   
