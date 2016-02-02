@@ -18,7 +18,7 @@ find_package(ROOT REQUIRED COMPONENTS MathCore RIO Hist Tree Net)
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
-ROOT_GENERATE_DICTIONARY(G__AnaTreeLoop AnaTreeLoop/AnaTreeLoopClusterLinearity.h AnaTreeLoop/AnaTreeLoopWireVariation.h AnaTreeLoop/AnaTreeLoop.h AnaTreeLoop/AnaTreeLoopData.h AnaTreeLoop/AnaTreeTracks.h AnaTreeLoop/AnaTreeClusters.h AnaTreeLoop/AnaTreeVertex.h AnaTreeLoop/AnaTreeHits.h AnaTreeLoop/AnaTreeRunInfo.h AnaTreeLoop/AnaTreeAlgs.h LINKDEF AnaTreeLoop/AnaTreeLoopLinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__AnaTreeLoop AnaTreeLoop/AnaTreeLoopClusterLinearity.h AnaTreeLoop/AnaTreeLoopWireVariation.h AnaTreeLoop/AnaTreeLoop.h AnaTreeLoop/AnaTreeLoopData.h AnaTreeLoop/AnaTreeTracks.h AnaTreeLoop/AnaTreeClusters.h AnaTreeLoop/AnaTreeVertex.h AnaTreeLoop/AnaTreeFlash.h AnaTreeLoop/AnaTreeHits.h AnaTreeLoop/AnaTreeRunInfo.h AnaTreeLoop/AnaTreeAlgs.h LINKDEF AnaTreeLoop/AnaTreeLoopLinkDef.h)
 
 # and compile src into a library
 add_library(AnaTreeLoop SHARED ${SOME_PROJ_LIB_SRCS} G__AnaTreeLoop.cxx)

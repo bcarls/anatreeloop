@@ -19,6 +19,7 @@
 
 #include "AnaTreeTracks.h"
 #include "AnaTreeVertex.h"
+#include "AnaTreeFlash.h"
 #include "AnaTreeAlgs.h"
 
 
@@ -46,6 +47,7 @@ public :
    // The module access objects
    AnaTreeTracks  *ana_tree_tracks;
    AnaTreeVertex  *ana_tree_vtx;
+   AnaTreeFlash   *ana_tree_flash;
    AnaTreeAlgs    *ana_tree_algs;
 
    // Parameters

@@ -45,6 +45,7 @@ void AnaTreeLoopData::Loop()
    // Give the blocks the names of the modules
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
    ana_tree_vtx = new AnaTreeVertex(fChain,fVertexModuleName);
+   ana_tree_flash = new AnaTreeFlash(fChain);
 
    // Setup an array for the TPC boundary 
    double fTPC[6] = {0.,-116., 0.,256.,116.,1060.};
@@ -91,7 +92,6 @@ void AnaTreeLoopData::Loop()
 
          // Print out track pitch
          // std::cout << ana_tree_tracks->Pitch(i,2) << std::endl;
-
 
 
          // Look at boundaries of TPC
