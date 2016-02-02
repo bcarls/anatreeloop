@@ -4,9 +4,9 @@
 #include <iostream>
 
 // ROOT includes 
-#include <root/TStyle.h>
-#include <root/TCanvas.h>
-#include <root/TMath.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TMath.h>
 
 
 

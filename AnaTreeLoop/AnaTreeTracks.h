@@ -2,8 +2,8 @@
 #ifndef AnaTreeTracks_h
 #define AnaTreeTracks_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
+#include <TROOT.h>
+#include <TChain.h>
 
 constexpr int kMaxTracks = 500;
 constexpr int kMaxTrackHits = 2000;

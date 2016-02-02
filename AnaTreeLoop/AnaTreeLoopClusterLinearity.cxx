@@ -4,12 +4,12 @@
 #include <iostream>
 
 // ROOT includes 
-#include <root/TStyle.h>
-#include <root/TCanvas.h>
-#include <root/TMath.h>
-#include <root/TPrincipal.h>
-#include <root/TGraph.h>
-#include <root/TF1.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TMath.h>
+#include <TPrincipal.h>
+#include <TGraph.h>
+#include <TF1.h>
 
 
 

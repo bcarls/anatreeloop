@@ -8,11 +8,11 @@
 #ifndef AnaTreeLoopWireVariation_h
 #define AnaTreeLoopWireVariation_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
-#include <root/TFile.h>
-#include <root/TH1F.h>
-#include <root/TH2F.h>
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include <TH1F.h>
+#include <TH2F.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
