@@ -2,7 +2,7 @@
 
 Setup root6. To checkout and build:
 
-`git clone https://github.com/bcarls/anatreeloop`
+`git@github.com:bcarls/anatreeloop.git`
 
 `cd anatreeloop`
 
