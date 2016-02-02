@@ -2,8 +2,8 @@
 #ifndef AnaTreeHits_h
 #define AnaTreeHits_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
+#include <TROOT.h>
+#include <TChain.h>
 
 constexpr int kMaxHits = 40000;
 

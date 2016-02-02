@@ -8,10 +8,10 @@
 #ifndef AnaTreeLoop_h
 #define AnaTreeLoop_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
-#include <root/TFile.h>
-#include <root/TH1F.h>
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include <TH1F.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>

@@ -2,8 +2,8 @@
 #ifndef AnaTreeClusters_h
 #define AnaTreeClusters_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
+#include <TROOT.h>
+#include <TChain.h>
 
 constexpr int kMaxClusters = 500;
 

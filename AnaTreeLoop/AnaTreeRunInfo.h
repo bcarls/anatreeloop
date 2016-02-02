@@ -2,8 +2,8 @@
 #ifndef AnaTreeRunInfo_h
 #define AnaTreeRunInfo_h
 
-#include <root/TROOT.h>
-#include <root/TChain.h>
+#include <TROOT.h>
+#include <TChain.h>
 
 class AnaTreeRunInfo {
 
