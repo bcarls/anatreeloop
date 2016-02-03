@@ -9,7 +9,7 @@ The easy way to get going is to install ROOT6 via [Homebrew](http://brew.sh/) us
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install homebrew/science/root6
-git clone git@github.com:bcarls/anatreeloop.git
+git clone https://github.com/bcarls/anatreeloop.git
 cd anatreeloop
 source setup_homebrew.sh
 mkdir build
@@ -28,7 +28,7 @@ source setup_homebrew.sh
 ## To build on the gpvm nodes
 
 ```bash
-git clone git@github.com:bcarls/anatreeloop.git
+git clone https://github.com/bcarls/anatreeloop.git
 cd anatreeloop
 source setup_gpvm.sh
 mkdir build
