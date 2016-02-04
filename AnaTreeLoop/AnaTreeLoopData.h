@@ -41,7 +41,12 @@ public :
    TH1F *hPerpDistYBound;
    TH1F *hPerpDistZBound;
    TH1F *hPerpDistToABound;
+   TH1F *hTrackStartEndY;
+   TH1F *hTrackStartEndZ;
+   TH1F *hNearestDistUntaggedToTaggedGT;
 
+
+   TH2F *hNearestDistUntaggedToTaggedGTTrackLength;
    TH2F *hPerpDistToABoundTrackLength;
 
    // The module access objects

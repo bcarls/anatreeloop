@@ -20,6 +20,12 @@ void AnaTreeLoopData::Loop()
    hLongestTrackLength   = new TH1F("hLongestTrackLength","Longest Track Length; Length [cm]; Tracks", 100, 0, 530);
 
    //
+   // Track endpoint distributions
+   //
+   hTrackStartEndY       = new TH1F("hTrackStartEndY","Track Start and End Points; [cm]; Tracks", 100, -116, 116);
+   hTrackStartEndZ       = new TH1F("hTrackStartEndZ","Track Start and End Points; [cm]; Tracks", 100, 0, 1060);
+
+   //
    // Track angle histograms
    //
    hTrackPhi                              = new TH1F("hTrackPhi","Track Phi; Phi; Tracks", 100, -3.14, 3.14);
@@ -30,17 +36,19 @@ void AnaTreeLoopData::Loop()
    //
    // Track boundary histograms
    // 
-   hPerpDistXBound   = new TH1F("hPerpDistXBound ","Closest Perpendicular Distance to TPC X Boundary; Dist [cm]; Tracks", 100, 0, 128);
-   hPerpDistYBound   = new TH1F("hPerpDistYBound ","Closest Perpendicular Distance to TPC Y Boundary; Dist [cm]; Tracks", 100, 0, 116);
-   hPerpDistZBound   = new TH1F("hPerpDistZBound ","Closest Perpendicular Distance to TPC Z Boundary; Dist [cm]; Tracks", 100, 0, 530);
-   hPerpDistToABound = new TH1F("hPerpDistToABound ","Closest Perpendicular Distance to A TPC Boundary; Dist [cm]; Tracks", 100, 0, 116);
+   hPerpDistXBound   = new TH1F("hPerpDistXBound ","Closest Perpendicular Distance to TPC X Boundary; Distance [cm]; Tracks", 100, 0, 128);
+   hPerpDistYBound   = new TH1F("hPerpDistYBound ","Closest Perpendicular Distance to TPC Y Boundary; Distance [cm]; Tracks", 100, 0, 116);
+   hPerpDistZBound   = new TH1F("hPerpDistZBound ","Closest Perpendicular Distance to TPC Z Boundary; Distance [cm]; Tracks", 100, 0, 530);
+   hPerpDistToABound = new TH1F("hPerpDistToABound ","Closest Perpendicular Distance to A TPC Boundary; Distance [cm]; Tracks", 100, 0, 116);
 
 
    //
    // Other histograms
    //
-   hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Closest Perpendicular Distance to A TPC Boundary; Dist [cm]; Length [cm]", 100, 0, 116,100,0,530);
-
+   hNearestDistUntaggedToTaggedGTTrackLength = new TH2F("hNearestDistUntaggedToTaggedGTTrackLength","Distance of Untagged Track to Tagged Track; Distance [cm]; Length [cm]", 100, 0, 116,100,0,530);
+   hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Closest Perpendicular Distance to A TPC Boundary; Distance [cm]; Length [cm]", 100, 0, 116,100,0,530);
+   hNearestDistUntaggedToTaggedGT = 
+      new TH1F("hNearestDistUntaggedToTaggedGT","Distance of Untagged Track to Tagged Track; Distance [cm]; Tracks", 100, 0, 500);
 
    // Give the blocks the names of the modules
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
@@ -115,7 +123,28 @@ void AnaTreeLoopData::Loop()
         
          double min_to_a_boundary_dist = std::min(min_z_dist, std::min(min_y_dist,min_x_dist));
 
+         // Distributions of the start and end points
+         hTrackStartEndY->Fill(ana_tree_tracks->StartY(i));
+         hTrackStartEndY->Fill(ana_tree_tracks->EndY(i));
+         hTrackStartEndZ->Fill(ana_tree_tracks->StartZ(i));
+         hTrackStartEndZ->Fill(ana_tree_tracks->EndZ(i));
 
+
+         // Get distance to closest tagged cosmic track 
+         // Does the track flunk the geometric tagger cut?
+         if(ana_tree_tracks->CosmicScoreTagger(i) <= 0.4){
+         
+            double shortestTrackDistance = 999999;
+            for (short j=0; j< ana_tree_tracks->NTracks(); j++){
+               if(ana_tree_tracks->CosmicScoreTagger(j) > 0.4){
+                  double trackDistance = ana_tree_algs->DistanceBetweenTracks(ana_tree_tracks,i,j);
+                  if(trackDistance < shortestTrackDistance)
+                  shortestTrackDistance = trackDistance;
+               }
+            }
+            hNearestDistUntaggedToTaggedGT->Fill(shortestTrackDistance);
+            hNearestDistUntaggedToTaggedGTTrackLength->Fill(ana_tree_tracks->Length(i),shortestTrackDistance);
+         }
 
          hTrackLength->Fill(ana_tree_tracks->Length(i));
          hTrackPhi->Fill(ana_tree_tracks->Phi(i));
@@ -137,6 +166,8 @@ void AnaTreeLoopData::Loop()
    // Write the histograms
    TFile f(fOutputFileName,"recreate");
 
+   hNearestDistUntaggedToTaggedGTTrackLength->Write();
+   hNearestDistUntaggedToTaggedGT->Write();
    hPerpDistToABoundTrackLength->Write();
 
    f.cd();
@@ -161,6 +192,14 @@ void AnaTreeLoopData::Loop()
    hPerpDistYBound->Write();
    hPerpDistZBound->Write();
    hPerpDistToABound->Write();
+
+   f.cd();
+   f.mkdir("track_startenddist");
+   f.cd("track_startenddist");
+
+   hTrackStartEndY->Write();
+   hTrackStartEndZ->Write();
+
 
    // Close the file
    f.Close();
