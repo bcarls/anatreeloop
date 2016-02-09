@@ -13,6 +13,11 @@
 void AnaTreeLoopData::Loop()
 {
 
+
+   // Setup an array for the TPC boundary 
+   double fTPC[6] = {0.,-116., 0.,256.,116.,1036.8};
+
+
    //
    // Track Length histograms
    //
@@ -37,16 +42,16 @@ void AnaTreeLoopData::Loop()
    // Track boundary histograms
    // 
    hPerpDistXBound   = new TH1F("hPerpDistXBound ","Closest Perpendicular Distance to TPC X Boundary; Distance [cm]; Tracks", 100, 0, 128);
-   hPerpDistYBound   = new TH1F("hPerpDistYBound ","Closest Perpendicular Distance to TPC Y Boundary; Distance [cm]; Tracks", 100, 0, 116);
-   hPerpDistZBound   = new TH1F("hPerpDistZBound ","Closest Perpendicular Distance to TPC Z Boundary; Distance [cm]; Tracks", 100, 0, 530);
+   hPerpDistYBound   = new TH1F("hPerpDistYBound ","Closest Perpendicular Distance to TPC Y Boundary; Distance [cm]; Tracks/1.16 cm", 100, 0, 116);
+   hPerpDistZBound   = new TH1F("hPerpDistZBound ","Closest Perpendicular Distance to TPC Z Boundary; Distance [cm]; Tracks/5.18 cm", 100, 0, 518.4);
    hPerpDistToABound = new TH1F("hPerpDistToABound ","Closest Perpendicular Distance to A TPC Boundary; Distance [cm]; Tracks", 100, 0, 116);
 
 
    //
    // Other histograms
    //
-   hNearestDistUntaggedToTaggedGTTrackLength = new TH2F("hNearestDistUntaggedToTaggedGTTrackLength","Distance of Untagged Track to Tagged Track; Distance [cm]; Length [cm]", 100, 0, 116,100,0,530);
-   hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Closest Perpendicular Distance to A TPC Boundary; Distance [cm]; Length [cm]", 100, 0, 116,100,0,530);
+   hNearestDistUntaggedToTaggedGTTrackLength = new TH2F("hNearestDistUntaggedToTaggedGTTrackLength","Track Length vs. Distance of Untagged Track to Tagged Track; Distance [cm]; Length [cm]", 50, 0, 100,50,0,500);
+   hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Track Length vs. Closest Perpendicular Distance to A TPC Boundary; Distance [cm]; Length [cm]", 50, 0, 100,50,0,400);
    hNearestDistUntaggedToTaggedGT = 
       new TH1F("hNearestDistUntaggedToTaggedGT","Distance of Untagged Track to Tagged Track; Distance [cm]; Tracks", 100, 0, 500);
 
@@ -54,9 +59,6 @@ void AnaTreeLoopData::Loop()
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
    ana_tree_vtx = new AnaTreeVertex(fChain,fVertexModuleName);
    ana_tree_flash = new AnaTreeFlash(fChain);
-
-   // Setup an array for the TPC boundary 
-   double fTPC[6] = {0.,-116., 0.,256.,116.,1060.};
 
    size_t nEvtsProcessed = 0;
 
