@@ -1,0 +1,15 @@
+/Users/bcarls/cosmic_data_anatree/run3747/anahist.root
+/Users/bcarls/cosmic_data_anatree/run3780/anahist.root
+/Users/bcarls/cosmic_data_anatree/run3795/anahist.root
+/Users/bcarls/cosmic_data_anatree/run3812/anahist.root
+/Users/bcarls/cosmic_data_anatree/run3827/anahist.root
+/Users/bcarls/cosmic_data_anatree/run4102/anahist.root
+/Users/bcarls/cosmic_data_anatree/run4122/anahist.root
+/Users/bcarls/cosmic_data_anatree/run4163/run4163.v04_31_00.root
+/Users/bcarls/cosmic_data_anatree/run4187/run4187.v04_31_00.root
+/Users/bcarls/cosmic_data_anatree/run4212/run4212.v04_31_00.root
+/Users/bcarls/cosmic_data_anatree/run4314/run4314.v04_32_01.root
+/Users/bcarls/cosmic_data_anatree/run4333/run4333.v04_32_01.root
+/Users/bcarls/cosmic_data_anatree/run4338/run4338.v04_32_01.root
+/Users/bcarls/cosmic_data_anatree/run4369/run4369.v04_32_01.root
+/Users/bcarls/cosmic_data_anatree/run4388/run4388.v04_32_01.root

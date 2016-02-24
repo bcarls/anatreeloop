@@ -13,6 +13,7 @@
 #pragma link C++ class AnaTreeTruth+;
 #pragma link C++ class AnaTreeLoop+;
 #pragma link C++ class AnaTreeLoopData+;
+#pragma link C++ class AnaTreeLoopDataStability+;
 #pragma link C++ class AnaTreeLoopWireVariation+;
 #pragma link C++ class AnaTreeLoopClusterLinearity+;
 

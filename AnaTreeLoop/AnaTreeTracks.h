@@ -18,39 +18,39 @@ class AnaTreeTracks {
       Short_t NTracks() {return fNTracks;}
 
       // Tagging variables
-      Short_t NCosmicTagsTagger(short i){ return fNCosmicTagsTagger[i];}
-      Float_t CosmicScoreTagger(short i){ return fCosmicScoreTagger[i];}
-      Short_t CosmicTypeTagger(short i){ return fCosmicTypeTagger[i];}
-      Short_t NCosmicTagsFlashMatch(short i){ return fNCosmicTagsFlashMatch[i];}
-      Float_t CosmicScoreFlashMatch(short i){ return fCosmicScoreFlashMatch[i];}
-      Short_t CosmicTypeFlashMatch(short i){ return fCosmicTypeFlashMatch[i];}
+      Short_t NCosmicTagsTagger(int i){ return fNCosmicTagsTagger[i];}
+      Float_t CosmicScoreTagger(int i){ return fCosmicScoreTagger[i];}
+      Short_t CosmicTypeTagger(int i){ return fCosmicTypeTagger[i];}
+      Short_t NCosmicTagsFlashMatch(int i){ return fNCosmicTagsFlashMatch[i];}
+      Float_t CosmicScoreFlashMatch(int i){ return fCosmicScoreFlashMatch[i];}
+      Short_t CosmicTypeFlashMatch(int i){ return fCosmicTypeFlashMatch[i];}
      
       // Track variables
-      Short_t ID(short i){ return fID[i];}
-      Float_t Length(short i){ return fLength[i];}
-      Float_t Phi(short i){ return fPhi[i];}
-      Float_t Theta(short i){ return fTheta[i];}
-      Float_t ThetaXZ(short i){ return fThetaXZ[i];}
-      Float_t ThetaYZ(short i){ return fThetaYZ[i];}
-      Float_t StartX(short i){ return fStartX[i];}
-      Float_t StartY(short i){ return fStartY[i];}
-      Float_t StartZ(short i){ return fStartZ[i];}
-      Float_t EndX(short i){ return fEndX[i];}
-      Float_t EndY(short i){ return fEndY[i];}
-      Float_t EndZ(short i){ return fEndZ[i];}
-      Float_t Range(short i,short plane){ return fTrackRange[i][plane];}
-      Float_t Pitch(short i,short plane){ return fTrackPitch[i][plane];}
-      Float_t KE(short i,short plane){ return fTrackKE[i][plane];}
-      Float_t PIDA(short i, short plane){ return fPIDA[i][plane];}
-      Float_t Origin(short i,short plane){ return fOrigin[i][plane];}
-      Int_t   PDGTruth(short i,short plane){ return fPDGTruth[i][plane];}
-      Short_t PIDBestPlane(short i){ return fPIDBestPlane[i];}
-      Short_t NTrackHits(short i, short plane){ return fNTrackHits[i][plane];}
+      Short_t ID(int i){ return fID[i];}
+      Float_t Length(int i){ return fLength[i];}
+      Float_t Phi(int i){ return fPhi[i];}
+      Float_t Theta(int i){ return fTheta[i];}
+      Float_t ThetaXZ(int i){ return fThetaXZ[i];}
+      Float_t ThetaYZ(int i){ return fThetaYZ[i];}
+      Float_t StartX(int i){ return fStartX[i];}
+      Float_t StartY(int i){ return fStartY[i];}
+      Float_t StartZ(int i){ return fStartZ[i];}
+      Float_t EndX(int i){ return fEndX[i];}
+      Float_t EndY(int i){ return fEndY[i];}
+      Float_t EndZ(int i){ return fEndZ[i];}
+      Float_t Range(int i,short plane){ return fTrackRange[i][plane];}
+      Float_t Pitch(int i,short plane){ return fTrackPitch[i][plane];}
+      Float_t KE(int i,short plane){ return fTrackKE[i][plane];}
+      Float_t PIDA(int i, short plane){ return fPIDA[i][plane];}
+      Float_t Origin(int i,short plane){ return fOrigin[i][plane];}
+      Int_t   PDGTruth(int i,short plane){ return fPDGTruth[i][plane];}
+      Short_t PIDBestPlane(int i){ return fPIDBestPlane[i];}
+      Short_t NTrackHits(int i, short plane){ return fNTrackHits[i][plane];}
 
       // Track "HitData" and "HitCoordData" variables
-      Float_t TrackHitdEdx(short i, short plane, short j){return fTrackHitdEdx[i][plane][j];}
-      Float_t TrackHitdQdx(short i, short plane, short j){return fTrackHitdQdx[i][plane][j];}
-      Float_t TrackHitXYZ(short i, short plane, short j, short hitplane){return fTrackHitXYZ[i][plane][j][hitplane];}
+      Float_t TrackHitdEdx(int i, short plane, int j){return fTrackHitdEdx[i][plane][j];}
+      Float_t TrackHitdQdx(int i, short plane, int j){return fTrackHitdQdx[i][plane][j];}
+      Float_t TrackHitXYZ(int i, short plane, int j, short hitplane){return fTrackHitXYZ[i][plane][j][hitplane];}
 
    private:
 

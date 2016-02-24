@@ -15,16 +15,14 @@ class AnaTreeFlash {
       AnaTreeFlash(TTree *fChain);
 
       Int_t NFlashes() {return fNFlashes;}
-
-      // Flash variables
-      Float_t FlashTime(short i){ return fFlashTime[i];}
-      Float_t FlashPE(short i){ return fFlashPE[i];}
-      Float_t FlashYCenter(short i){ return fFlashYCenter[i];}
-      Float_t FlashZCenter(short i){ return fFlashZCenter[i];}
+      Float_t FlashTime(int i) {return fFlashTime[i];}
+      Float_t FlashPE(int i) {return fFlashPE[i];}
+      Float_t FlashYCenter(int i) {return fFlashYCenter[i];}
+      Float_t FlashZCenter(int i) {return fFlashZCenter[i];}
 
    private:
 
-      Int_t   fNFlashes;
+      Int_t fNFlashes;
       Float_t fFlashTime[kMaxFlashes];
       Float_t fFlashPE[kMaxFlashes];
       Float_t fFlashYCenter[kMaxFlashes];

@@ -5,8 +5,8 @@
 // found on file: /Users/bcarls/MCC5_AnaTree/v03_07_00/prodcosmics/ana_hist.root
 //////////////////////////////////////////////////////////
 
-#ifndef AnaTreeLoopData_h
-#define AnaTreeLoopData_h
+#ifndef AnaTreeLoopDataStability_h
+#define AnaTreeLoopDataStability_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -22,33 +22,15 @@
 #include "AnaTreeVertex.h"
 #include "AnaTreeFlash.h"
 #include "AnaTreeAlgs.h"
+#include "AnaTreeRunInfo.h"
 
 
 
-class AnaTreeLoopData {
+class AnaTreeLoopDataStability {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 
-   // Declare histograms
-   TH1F *hTrackPhi;
-   TH1F *hLongestTrackPhi;
-   TH1F *hTrackThetaXZ;
-   TH1F *hLongestTrackThetaXZ;
-   TH1F *hTrackLength;
-   TH1F *hLongestTrackLength;
-
-   TH1F *hPerpDistXBound;
-   TH1F *hPerpDistYBound;
-   TH1F *hPerpDistZBound;
-   TH1F *hPerpDistToABound;
-   TH1F *hTrackStartEndY;
-   TH1F *hTrackStartEndZ;
-   TH1F *hNearestDistUntaggedToTaggedGT;
-
-
-   TH2F *hNearestDistUntaggedToTaggedGTTrackLength;
-   TH2F *hPerpDistToABoundTrackLength;
 
    // The module access objects
    AnaTreeHits    *ana_tree_hits;
@@ -56,6 +38,7 @@ public :
    AnaTreeVertex  *ana_tree_vtx;
    AnaTreeFlash   *ana_tree_flash;
    AnaTreeAlgs    *ana_tree_algs;
+   AnaTreeRunInfo *ana_tree_run;
 
    // Parameters
    size_t          fNEvts;
@@ -66,8 +49,8 @@ public :
 
    std::vector<std::string>  *processname;
 
-   AnaTreeLoopData(TTree *tree=0);
-   virtual ~AnaTreeLoopData();
+   AnaTreeLoopDataStability(TTree *tree=0);
+   virtual ~AnaTreeLoopDataStability();
    // virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -87,8 +70,8 @@ public :
 
 #endif
 
-#ifdef AnaTreeLoopData_cxx
-AnaTreeLoopData::AnaTreeLoopData(TTree *tree) : fChain(0)
+#ifdef AnaTreeLoopDataStability_cxx
+AnaTreeLoopDataStability::AnaTreeLoopDataStability(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -107,44 +90,44 @@ AnaTreeLoopData::AnaTreeLoopData(TTree *tree) : fChain(0)
    fNEvtsToReport = 1000;
 }
 
-void AnaTreeLoopData::SetTrackModule(TString trackModuleName){
+void AnaTreeLoopDataStability::SetTrackModule(TString trackModuleName){
    fTrackModuleName = trackModuleName;
    return;
 }
 
-void AnaTreeLoopData::SetVertexModule(TString vertexModuleName){
+void AnaTreeLoopDataStability::SetVertexModule(TString vertexModuleName){
    fVertexModuleName = vertexModuleName;
    return;
 }
 
-void AnaTreeLoopData::SetOutputFile(TString outputFileName){
+void AnaTreeLoopDataStability::SetOutputFile(TString outputFileName){
    fOutputFileName = outputFileName;
    return;
 }
 
-void AnaTreeLoopData::SetNEventsToReport(size_t nEvtsToReport){
+void AnaTreeLoopDataStability::SetNEventsToReport(size_t nEvtsToReport){
    fNEvtsToReport = nEvtsToReport;
    return;
 }
 
-void AnaTreeLoopData::SetNEvents(size_t nevts){
+void AnaTreeLoopDataStability::SetNEvents(size_t nevts){
    fNEvts = nevts;
    return;
 }
 
-AnaTreeLoopData::~AnaTreeLoopData()
+AnaTreeLoopDataStability::~AnaTreeLoopDataStability()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t AnaTreeLoopData::GetEntry(Long64_t entry)
+Int_t AnaTreeLoopDataStability::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t AnaTreeLoopData::LoadTree(Long64_t entry)
+Long64_t AnaTreeLoopDataStability::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -157,7 +140,7 @@ Long64_t AnaTreeLoopData::LoadTree(Long64_t entry)
    return centry;
 }
 
-void AnaTreeLoopData::Init(TTree *tree)
+void AnaTreeLoopDataStability::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -178,7 +161,7 @@ void AnaTreeLoopData::Init(TTree *tree)
    Notify();
 }
 
-Bool_t AnaTreeLoopData::Notify()
+Bool_t AnaTreeLoopDataStability::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -189,18 +172,18 @@ Bool_t AnaTreeLoopData::Notify()
    return kTRUE;
 }
 
-void AnaTreeLoopData::Show(Long64_t entry)
+void AnaTreeLoopDataStability::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-// Int_t AnaTreeLoopData::Cut(Long64_t entry)
+// Int_t AnaTreeLoopDataStability::Cut(Long64_t entry)
 // {
 // // This function may be called from Loop.
 // // returns  1 if entry is accepted.
 // // returns -1 otherwise.
 //    return 1;
 // }
-#endif // #ifdef AnaTreeLoopData_cxx
+#endif // #ifdef AnaTreeLoopDataStability_cxx

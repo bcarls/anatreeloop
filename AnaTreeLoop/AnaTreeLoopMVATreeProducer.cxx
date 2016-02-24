@@ -244,6 +244,8 @@ void AnaTreeLoopMVATreeProducer::Loop()
 
 
 
+   // Turn off all branches, this speeds stuff up
+   fChain->SetBranchStatus("*",0);
    // Give the tracks blocks the name of the track module
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
    ana_tree_truth = new AnaTreeTruth(fChain);

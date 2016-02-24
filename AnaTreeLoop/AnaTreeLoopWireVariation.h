@@ -20,7 +20,6 @@
 #include "AnaTreeRunInfo.h"
 #include "AnaTreeTracks.h"
 #include "AnaTreeHits.h"
-#include "AnaTreeVertex.h"
 #include "AnaTreeAlgs.h"
 
 
@@ -52,19 +51,18 @@ public :
    TH1F *hYPlanedQdx[kYWires];
 
    TH2F *hPerpDistToABoundTrackLength;
+   TH2F *hYPlaneHitChargeVsAngle;
 
    // The module access objects
    AnaTreeRunInfo *ana_tree_runinfo;
    AnaTreeHits    *ana_tree_hits;
    AnaTreeTracks  *ana_tree_tracks;
-   AnaTreeVertex  *ana_tree_vtx;
    AnaTreeAlgs    *ana_tree_algs;
 
    // Parameters
    size_t          fNEvts;
    size_t          fNEvtsToReport;
    TString         fTrackModuleName;
-   TString         fVertexModuleName;
    TString         fOutputFileName;
 
    std::vector<std::string>  *processname;
@@ -112,11 +110,6 @@ AnaTreeLoopWireVariation::AnaTreeLoopWireVariation(TTree *tree) : fChain(0)
 
 void AnaTreeLoopWireVariation::SetTrackModule(TString trackModuleName){
    fTrackModuleName = trackModuleName;
-   return;
-}
-
-void AnaTreeLoopWireVariation::SetVertexModule(TString vertexModuleName){
-   fVertexModuleName = vertexModuleName;
    return;
 }
 

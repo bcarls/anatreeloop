@@ -45,16 +45,15 @@ def main(argv):
         print 'Adding input file: '+f+'.'
         c.Add(f)
 
-    t = ROOT.AnaTreeLoopWireVariation(c)
+    t = ROOT.AnaTreeLoopDataStability(c)
 
     t.SetNEvents(nevts)
     t.SetNEventsToReport(1000)
-    t.SetTrackModule("trackkalmanhit")
-    # t.SetTrackModule("trackkalmanhitcc")
-    # t.SetTrackModule("pandoraCosmicKHit")
-    # t.SetVertexModule("pandoraCosmic")
+    # t.SetTrackModule("trackkalmanhit")
+    t.SetTrackModule("pandoraCosmicKHit")
+    t.SetVertexModule("pandoraCosmic")
 
-    t.SetOutputFile("AnaTreeLoopWireVariation.root")
+    t.SetOutputFile("AnaTreeLoopDataStability.root")
     t.Loop()
 
 

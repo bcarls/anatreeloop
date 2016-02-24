@@ -222,6 +222,8 @@ void AnaTreeLoop::Loop()
    hLongestTrackNearestVtxDistTrueCos = new TH1F("hLongestTrackNearestVtxDistTrueCos","Distance to nearest vertex; Distance [cm]; Tracks", 100, 0, 25);
 
 
+   // Turn off all branches, this speeds stuff up
+   fChain->SetBranchStatus("*",0);
    // Give the tracks blocks the name of the track module
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
    ana_tree_truth = new AnaTreeTruth(fChain);

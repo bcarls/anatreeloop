@@ -20,7 +20,10 @@ void AnaTreeLoopClusterLinearity::Loop()
    TCanvas *c1 = new TCanvas("c1","Tree test");
 
    gStyle->SetOptFit(1111);
-   
+  
+
+   // Turn off all branches, this speeds stuff up
+   fChain->SetBranchStatus("*",0);
    // Give the blocks the names of the modules
    ana_tree_hits = new AnaTreeHits(fChain);
    ana_tree_clusters = new AnaTreeClusters(fChain);

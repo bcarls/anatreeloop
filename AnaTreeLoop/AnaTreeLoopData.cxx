@@ -17,7 +17,6 @@ void AnaTreeLoopData::Loop()
    // Setup an array for the TPC boundary 
    double fTPC[6] = {0.,-116., 0.,256.,116.,1036.8};
 
-
    //
    // Track Length histograms
    //
@@ -55,7 +54,10 @@ void AnaTreeLoopData::Loop()
    hNearestDistUntaggedToTaggedGT = 
       new TH1F("hNearestDistUntaggedToTaggedGT","Distance of Untagged Track to Tagged Track; Distance [cm]; Tracks", 100, 0, 500);
 
+   // Turn off all branches, this speeds stuff up
+   fChain->SetBranchStatus("*",0);
    // Give the blocks the names of the modules
+   ana_tree_hits = new AnaTreeHits(fChain);
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
    ana_tree_vtx = new AnaTreeVertex(fChain,fVertexModuleName);
    ana_tree_flash = new AnaTreeFlash(fChain);

@@ -3,6 +3,38 @@
 
 
 AnaTreeTracks::AnaTreeTracks(TTree *fChain,TString fTrackModule) {
+
+   fChain->SetBranchStatus("ntracks_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkId_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkphi_"+fTrackModule,1);
+   fChain->SetBranchStatus("trktheta_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkthetaxz_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkthetayz_"+fTrackModule,1);
+   fChain->SetBranchStatus("trklen_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkstartx_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkstarty_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkstartz_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkendx_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkendy_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkendz_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkncosmictags_tagger_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkcosmicscore_tagger_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkcosmictype_tagger_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkncosmictags_flashmatch_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkcosmicscore_flashmatch_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkcosmictype_flashmatch_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkrange_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkpitchc_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkke_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkpidpida_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkpdgtruth_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkorigin_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkpidbestplane_"+fTrackModule,1);
+   fChain->SetBranchStatus("ntrkhits_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkdedx_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkdqdx_"+fTrackModule,1);
+   fChain->SetBranchStatus("trkxyz_"+fTrackModule,1);
+   
    fChain->SetBranchAddress("ntracks_"+fTrackModule,&fNTracks);
    fChain->SetBranchAddress("trkId_"+fTrackModule,&fID);
    fChain->SetBranchAddress("trkphi_"+fTrackModule,&fPhi);

@@ -7,11 +7,15 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
+#include <TStopwatch.h>
 
 
 
 void AnaTreeLoopWireVariation::Loop()
 {
+
+   // Setup stopwatch
+   TStopwatch *stopwatch = new TStopwatch();
 
    //
    // Track Length histograms
@@ -40,15 +44,15 @@ void AnaTreeLoopWireVariation::Loop()
    // dQdx for each wire, corrected for pitch
    //
    for(int i = 0; i < kUWires; i++){
-       hUPlanedQdx[i] = new TH1F("hUPlanedQdx_"+(TString)Form("%d",i),"dQdx for U Plane;dQdx;Hits",75,0,2000);
+       hUPlanedQdx[i] = new TH1F("hUPlanedQdx_"+(TString)Form("%d",i),"dQdx for U Plane;dQ/dx [ADC/cm];Hits",75,0,1000);
        hUPlanedQdx[i]->Sumw2();
    }
    for(int i = 0; i < kVWires; i++){
-       hVPlanedQdx[i] = new TH1F("hVPlanedQdx_"+(TString)Form("%d",i),"dQdx for V Plane;dQdx;Hits",75,0,2000); 
+       hVPlanedQdx[i] = new TH1F("hVPlanedQdx_"+(TString)Form("%d",i),"dQdx for V Plane;dQ/dx [ADC/cm];Hits",75,0,1000); 
        hVPlanedQdx[i]->Sumw2();
    }
    for(int i = 0; i < kYWires; i++){
-       hYPlanedQdx[i] = new TH1F("hYPlanedQdx_"+(TString)Form("%d",i),"dQdx for Y Plane;dQdx;Hits",75,0,2000); 
+       hYPlanedQdx[i] = new TH1F("hYPlanedQdx_"+(TString)Form("%d",i),"dQdx for Y Plane;dQ/dx [ADC/cm];Hits",75,0,2000); 
        hYPlanedQdx[i]->Sumw2();
    }
 
@@ -56,13 +60,20 @@ void AnaTreeLoopWireVariation::Loop()
    // Other histograms
    //
    hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Closest Perpendicular Distance to A TPC Boundary; Dist [cm]; Length [cm]", 100, 0, 116,100,0,530);
+   hYPlaneHitChargeVsAngle = new TH2F("hYPlaneHitChargeVsAngle","Angle to Wire Plane in Plane Perp. to Wires; Track Angle [radians]; Hit Charge [ADC]", 100, 0, 3.14/2,100,0,1000);
 
 
+   // Get gain histogram
+   // TFile *fGain = new TFile("20160204_PulserGain_Run3048.root");
+   // TH1F *hGainVsChan = (TH1F*)fGain->Get("hGainVsChan");
+
+
+   // Turn off all branches, this speeds stuff up
+   fChain->SetBranchStatus("*",0);
    // Give the blocks the names of the modules
    ana_tree_runinfo = new AnaTreeRunInfo(fChain);
    ana_tree_hits = new AnaTreeHits(fChain);
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
-   ana_tree_vtx = new AnaTreeVertex(fChain,fVertexModuleName);
 
    // Setup an array for the TPC boundary 
    double fTPC[6] = {0.,-116., 0.,256.,116.,1060.};
@@ -78,6 +89,8 @@ void AnaTreeLoopWireVariation::Loop()
       fNEvts = nentries;
       std::cout << "No number of events to process specified, running over all " << nentries << " of them." << std::endl;
    }
+
+   stopwatch->Start();
 
    // Loop over events
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -131,8 +144,14 @@ void AnaTreeLoopWireVariation::Loop()
          }
 
          // Is this a crossing track?
-         if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
-        
+         // if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
+
+         // Is this a track longer than 200 cm?
+         if( ana_tree_tracks->Length(i) > 200
+              // && ana_tree_tracks->ThetaXZ(i) > -0.5
+              // && ana_tree_tracks->ThetaXZ(i) < 0.5
+               ){
+
 
             // For each track hit, find its dQdx for each plane
             for (int j = 0; j < ana_tree_hits->NHits(); j++){
@@ -158,17 +177,21 @@ void AnaTreeLoopWireVariation::Loop()
                   if(nHitsOnWire != 1)
                      continue;
 
-                  // Is this a U plane hit ?
+                  // double fHitGain = hGainVsChan->GetBinContent(ana_tree_hits->HitChannel(j));
+                  double fHitGain = 1;
+
+                  // Is this a U plane hit?
                   if(ana_tree_hits->HitPlane(j) == 0){
-                     hUPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,0));
+                     hUPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(fHitGain*ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,0));
                   }
-                  // Is this a V plane hit ?
+                  // Is this a V plane hit?
                   if(ana_tree_hits->HitPlane(j) == 1){
-                     hVPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,1));
+                     hVPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(fHitGain*ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,1));
                   }
-                  // Is this a Y plane hit ?
+                  // Is this a Y plane hit?
                   if(ana_tree_hits->HitPlane(j) == 2){
-                     hYPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,2));
+                     hYPlanedQdx[ana_tree_hits->HitWire(j)]->Fill(fHitGain*ana_tree_hits->HitCharge(j)/ana_tree_tracks->Pitch(i,2));
+                     hYPlaneHitChargeVsAngle->Fill(ana_tree_tracks->ThetaXZ(i),ana_tree_hits->HitCharge(j));
                   }
                }
             }
@@ -216,10 +239,17 @@ void AnaTreeLoopWireVariation::Loop()
 
    }
 
+
+   stopwatch->Stop();
+   std::cout << "Total CPU Time: " << stopwatch->CpuTime() << " Per Event: " << stopwatch->CpuTime()/nentries << std::endl;
+   std::cout << "Total Real Time: " << stopwatch->RealTime() << " Per Event: " << stopwatch->RealTime()/nentries << std::endl;
+
+
    // Write the histograms
    TFile f(fOutputFileName,"recreate");
 
    hPerpDistToABoundTrackLength->Write();
+   hYPlaneHitChargeVsAngle->Write();
 
    f.cd();
    f.mkdir("track_lengths");
