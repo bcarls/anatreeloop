@@ -5,6 +5,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class AnaTreeTracks+;
+#pragma link C++ class AnaTreeMCTracks+;
 #pragma link C++ class AnaTreeClusters+;
 #pragma link C++ class AnaTreeHits+;
 #pragma link C++ class AnaTreeFlash+;
@@ -16,5 +17,6 @@
 #pragma link C++ class AnaTreeLoopDataStability+;
 #pragma link C++ class AnaTreeLoopWireVariation+;
 #pragma link C++ class AnaTreeLoopClusterLinearity+;
+#pragma link C++ class AnaTreeLoopMCStudy+;
 
 #endif
