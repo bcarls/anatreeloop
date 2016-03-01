@@ -5,6 +5,7 @@
 AnaTreeTruth::AnaTreeTruth(TTree *fChain) {
    fChain->SetBranchStatus("mcevts_truth",1);
    fChain->SetBranchStatus("nuPDG_truth",1);
+   fChain->SetBranchStatus("enu_truth",1);
    fChain->SetBranchStatus("ccnc_truth",1);
    fChain->SetBranchStatus("nuvtxx_truth",1);
    fChain->SetBranchStatus("nuvtxy_truth",1);
@@ -13,6 +14,7 @@ AnaTreeTruth::AnaTreeTruth(TTree *fChain) {
 
    fChain->SetBranchAddress("mcevts_truth",&fMCEvtsTruth);
    fChain->SetBranchAddress("nuPDG_truth",&fNuPDGTruth);
+   fChain->SetBranchAddress("enu_truth",&fENuTruth);
    fChain->SetBranchAddress("ccnc_truth",&fCCNCTruth);
    fChain->SetBranchAddress("nuvtxx_truth",&fNuVtxXTruth);
    fChain->SetBranchAddress("nuvtxy_truth",&fNuVtxYTruth);

@@ -30,7 +30,7 @@ void AnaTreeLoopMCStudy::Loop()
    // Track Length histograms
    //
    hTrackLengthRecoVsTrue = new TH2F("hTrackLengthRecoVsTrue","hTrackLengthRecoVsTrue",50,0,530,50,0,530);
-
+   hEffTrueTrackLength = new TProfile("hEffTrueTrackLength","hEffTrueTrackLength",50,0,530);
 
 
    //
@@ -125,16 +125,35 @@ void AnaTreeLoopMCStudy::Loop()
             }
          }
       }
-   
-   
-   }
+ 
 
+      // Loop over MC tracks 
+      bool foundTrueMuon = false;
+      for (int j= 0; j< ana_tree_mctracks->NMCTracks(); j++){
+         if(ana_tree_mctracks->Origin(j) == 1
+              &&  ana_tree_mctracks->PDGTruth(j) == 13
+               ){
+            // Loop over tracks
+            for (int i= 0; i< ana_tree_tracks->NTracks(); i++){
+               if(ana_tree_tracks->Origin(i,ana_tree_tracks->PIDBestPlane(i)) == 1
+                  && ana_tree_tracks->ID(i) == ana_tree_mctracks->ID(j)        
+                     ){
+                  hEffTrueTrackLength->Fill(ana_tree_mctracks->LengthDrifted(j),1);
+                  foundTrueMuon = true;
+               }
+            }
+            if(foundTrueMuon == false){
+               hEffTrueTrackLength->Fill(ana_tree_mctracks->LengthDrifted(j),0);
+            }
+         }
+      }
+   }
 
    // Write the histograms
    TFile f(fOutputFileName,"recreate");
    
    hTrackLengthRecoVsTrue->Write();
-
+   hEffTrueTrackLength->Write();
    // Close the file
    f.Close();
 }

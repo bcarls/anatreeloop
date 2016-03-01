@@ -13,6 +13,7 @@
 #include <TFile.h>
 #include <TH1F.h>
 #include <TH2F.h>
+#include <TProfile.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
@@ -55,7 +56,7 @@ public :
 
    // Declare histograms
    TH2F* hTrackLengthRecoVsTrue;
-
+   TProfile* hEffTrueTrackLength;
 
    AnaTreeTracks  *ana_tree_tracks;
    AnaTreeMCTracks  *ana_tree_mctracks;
