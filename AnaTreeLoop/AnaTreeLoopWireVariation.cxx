@@ -144,13 +144,13 @@ void AnaTreeLoopWireVariation::Loop()
          }
 
          // Is this a crossing track?
-         // if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
+         if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
 
          // Is this a track longer than 200 cm?
-         if( ana_tree_tracks->Length(i) > 200
-              // && ana_tree_tracks->ThetaXZ(i) > -0.5
-              // && ana_tree_tracks->ThetaXZ(i) < 0.5
-               ){
+         // if( ana_tree_tracks->Length(i) > 200
+         //      && ana_tree_tracks->ThetaXZ(i) > -0.5
+         //      && ana_tree_tracks->ThetaXZ(i) < 0.5
+         //       ){
 
 
             // For each track hit, find its dQdx for each plane
