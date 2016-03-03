@@ -170,7 +170,9 @@ void AnaTreeLoopWireVariation::Loop()
                   for(auto wireToHitMapVecItr = wireToHitMap[ana_tree_hits->HitPlane(j)][ana_tree_hits->HitWire(j)].begin();
                      wireToHitMapVecItr != wireToHitMap[ana_tree_hits->HitPlane(j)][ana_tree_hits->HitWire(j)].end(); 
                      wireToHitMapVecItr++){
-                     if(ana_tree_hits->HitTrackKey(j) == ana_tree_hits->HitTrackKey(*wireToHitMapVecItr))
+                     // if(ana_tree_hits->HitTrackKey(j) == ana_tree_hits->HitTrackKey(*wireToHitMapVecItr))
+                     //    nHitsOnWire++;
+                     if( std::abs( 0.5*(ana_tree_hits->HitStartTick(j)+ana_tree_hits->HitEndTick(j)) - 0.5*(ana_tree_hits->HitStartTick(*wireToHitMapVecItr)+ana_tree_hits->HitEndTick(*wireToHitMapVecItr))) < 200)
                         nHitsOnWire++;
                   }
 

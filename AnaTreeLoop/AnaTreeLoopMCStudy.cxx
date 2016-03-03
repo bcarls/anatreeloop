@@ -15,7 +15,12 @@ void AnaTreeLoopMCStudy::Loop()
 {
 
    // Book histograms
-
+   hTrackXEndPointDiff = new TH1F("hTrackXEndPointDiff","hTrackXEndPointDiff",100,0,100);
+   hTrackYEndPointDiff = new TH1F("hTrackYEndPointDiff","hTrackYEndPointDiff",100,0,100);
+   hTrackZEndPointDiff = new TH1F("hTrackZEndPointDiff","hTrackZEndPointDiff",100,0,100);
+   hTrackXStartPointDiff = new TH1F("hTrackXStartPointDiff","hTrackXStartPointDiff",100,0,100);
+   hTrackYStartPointDiff = new TH1F("hTrackYStartPointDiff","hTrackYStartPointDiff",100,0,100);
+   hTrackZStartPointDiff = new TH1F("hTrackZStartPointDiff","hTrackZStartPointDiff",100,0,100);
 
    //
    // MC Truth Information
@@ -107,20 +112,30 @@ void AnaTreeLoopMCStudy::Loop()
 
       nEvtsProcessed++;
 
-
-
-
       // Loop over tracks
       for (int i= 0; i< ana_tree_tracks->NTracks(); i++){
-
          if(ana_tree_tracks->Origin(i,ana_tree_tracks->PIDBestPlane(i)) == 1){
-
             // Loop over MC tracks 
             for (int j= 0; j< ana_tree_mctracks->NMCTracks(); j++){
                if(ana_tree_tracks->ID(i) == ana_tree_mctracks->ID(j)
                     &&  ana_tree_mctracks->PDGTruth(j) == 13
                      ){
                   hTrackLengthRecoVsTrue->Fill(ana_tree_mctracks->LengthDrifted(j), ana_tree_tracks->Length(i));
+               double TrueStartX = std::min(ana_tree_mctracks->StartX(i),ana_tree_mctracks->EndX(i));
+               double TrueEndX = std::max(ana_tree_mctracks->StartX(i),ana_tree_mctracks->EndX(i));
+               double TrueStartY = std::min(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
+               double TrueEndY = std::max(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
+               double TrueStartZ = std::min(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
+               double TrueEndZ = std::max(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
+               double RecoStartX = std::min(ana_tree_tracks->StartX(i),ana_tree_tracks->EndX(i));
+               double RecoEndX = std::max(ana_tree_tracks->StartX(i),ana_tree_tracks->EndX(i));
+               double RecoStartY = std::min(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
+               double RecoEndY = std::max(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
+               double RecoStartZ = std::min(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
+               double RecoEndZ = std::max(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
+               hTrackXEndPointDiff->Fill(std::abs(TrueStartX-RecoEndX));
+               
+               
                }
             }
          }

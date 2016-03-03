@@ -51,6 +51,7 @@ def main(argv):
     t.SetNEventsToReport(1000)
     t.SetTrackModule("trackkalmanhit")
     # t.SetTrackModule("pandoraCosmicKHit")
+    # t.SetTrackModule("pandoraNuKHit")
 
     t.SetOutputFile("AnaTreeLoopMCStudy.root")
     t.Loop()

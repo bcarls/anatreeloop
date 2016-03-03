@@ -57,6 +57,12 @@ public :
    // Declare histograms
    TH2F* hTrackLengthRecoVsTrue;
    TProfile* hEffTrueTrackLength;
+   TH1F* hTrackXEndPointDiff;
+   TH1F* hTrackYEndPointDiff;
+   TH1F* hTrackZEndPointDiff;
+   TH1F* hTrackXStartPointDiff;
+   TH1F* hTrackYStartPointDiff;
+   TH1F* hTrackZStartPointDiff;
 
    AnaTreeTracks  *ana_tree_tracks;
    AnaTreeMCTracks  *ana_tree_mctracks;
