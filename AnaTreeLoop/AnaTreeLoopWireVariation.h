@@ -41,6 +41,8 @@ public :
    TH1F *hLongestTrackLength;
    TH1F *hTrackLengthX;
 
+   TH1F *hNCloseHits;
+
    TH1F *hPerpDistXBound;
    TH1F *hPerpDistYBound;
    TH1F *hPerpDistZBound;

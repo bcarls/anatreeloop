@@ -88,6 +88,7 @@ public :
 #endif
 
 #ifdef AnaTreeLoopData_cxx
+
 AnaTreeLoopData::AnaTreeLoopData(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file

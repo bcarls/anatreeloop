@@ -61,7 +61,7 @@ void AnaTreeLoopWireVariation::Loop()
    //
    hPerpDistToABoundTrackLength = new TH2F("hPerpDistToABoundTrackLength","Closest Perpendicular Distance to A TPC Boundary; Dist [cm]; Length [cm]", 100, 0, 116,100,0,530);
    hYPlaneHitChargeVsAngle = new TH2F("hYPlaneHitChargeVsAngle","Angle to Wire Plane in Plane Perp. to Wires; Track Angle [radians]; Hit Charge [ADC]", 100, 0, 3.14/2,100,0,1000);
-
+   hNCloseHits                             = new TH1F("hNCloseHits","Number of hits close along track; Number of Hits; Hits", 20, 0, 20);
 
    // Get gain histogram
    // TFile *fGain = new TFile("20160204_PulserGain_Run3048.root");
@@ -144,13 +144,13 @@ void AnaTreeLoopWireVariation::Loop()
          }
 
          // Is this a crossing track?
-         if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
+         // if(std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) > 250 && std::abs(ana_tree_tracks->StartX(i)-ana_tree_tracks->EndX(i)) < 270){
 
          // Is this a track longer than 200 cm?
-         // if( ana_tree_tracks->Length(i) > 200
-         //      && ana_tree_tracks->ThetaXZ(i) > -0.5
-         //      && ana_tree_tracks->ThetaXZ(i) < 0.5
-         //       ){
+         if( ana_tree_tracks->Length(i) > 200
+              && ana_tree_tracks->ThetaXZ(i) > -0.5
+              && ana_tree_tracks->ThetaXZ(i) < 0.5
+               ){
 
 
             // For each track hit, find its dQdx for each plane
@@ -175,6 +175,8 @@ void AnaTreeLoopWireVariation::Loop()
                      if( std::abs( 0.5*(ana_tree_hits->HitStartTick(j)+ana_tree_hits->HitEndTick(j)) - 0.5*(ana_tree_hits->HitStartTick(*wireToHitMapVecItr)+ana_tree_hits->HitEndTick(*wireToHitMapVecItr))) < 200)
                         nHitsOnWire++;
                   }
+
+                  hNCloseHits->Fill(nHitsOnWire);
 
                   if(nHitsOnWire != 1)
                      continue;
@@ -252,6 +254,7 @@ void AnaTreeLoopWireVariation::Loop()
 
    hPerpDistToABoundTrackLength->Write();
    hYPlaneHitChargeVsAngle->Write();
+   hNCloseHits->Write();
 
    f.cd();
    f.mkdir("track_lengths");

@@ -14,11 +14,12 @@
 void DetectorStabilityPlotMaker(){
 
 
-
   TChain *DetectorStabilityChain = new TChain("DetectorStabilityTree");
   // DetectorStabilityChain->Add("AnaTreeLoopDataStability.root");
   DetectorStabilityChain->Add("AnaTreeLoopDataStability_0.root");
   DetectorStabilityChain->Add("AnaTreeLoopDataStability_1.root");
+  DetectorStabilityChain->Add("AnaTreeLoopDataStability_2.root");
+  DetectorStabilityChain->Add("AnaTreeLoopDataStability_3.root");
 
   // TFile *f = new TFile("AnaTreeLoopDataStability.root");
   TCanvas *c1 = new TCanvas("c1","Tree test");
@@ -33,7 +34,10 @@ void DetectorStabilityPlotMaker(){
   // Plot averge number of hits per event as a function of run
   //
 
-  TH2F *frameNumberHitsRun = new TH2F("","frameNumberHitsRun", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 5e4);
+  TH2F *frameNumberHitsRun = new TH2F("frameNumberHitsRun","Average Number of Hits per Event", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 5e4);
+  frameNumberHitsRun->GetXaxis()->SetTitle("Run Number");
+  frameNumberHitsRun->GetYaxis()->SetTitle("Average Number of Hits");
+  frameNumberHitsRun->GetYaxis()->SetTitleOffset(1.5);
   frameNumberHitsRun->Draw();
 
   TLegend *lNumberHitsRun = new TLegend(0.69,0.69,0.86,0.87);
@@ -84,13 +88,15 @@ void DetectorStabilityPlotMaker(){
   // Plot averge number of hits per event as a function of date
   //
 
-  TH2F *frameNumberHitsDate = new TH2F("","frameNumberHitsDate", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 5e4);
+  TH2F *frameNumberHitsDate = new TH2F("frameNumberHitsDate","Average Number of Hits per Event", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 5e4);
   frameNumberHitsDate->Draw();
   frameNumberHitsDate->GetXaxis()->SetTitle("Date/Time");
   frameNumberHitsDate->GetXaxis()->SetTimeDisplay(1);
   frameNumberHitsDate->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
   frameNumberHitsDate->GetXaxis()->SetLabelOffset(0.025);
   frameNumberHitsDate->GetXaxis()->SetTitleOffset(1.5);
+  frameNumberHitsDate->GetYaxis()->SetTitle("Average Number of Hits");
+  frameNumberHitsDate->GetYaxis()->SetTitleOffset(1.5);
 
   TLegend *lNumberHitsDate = new TLegend(0.69,0.69,0.86,0.87);
   lNumberHitsDate->SetFillColor(0);
@@ -140,7 +146,10 @@ void DetectorStabilityPlotMaker(){
   // Plot standard deviation of charge of hits per event in a run
   //
 
-  TH2F *frameHitChargeRunStanDev = new TH2F("","frameHitChargeRunStanDev", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 10);
+  TH2F *frameHitChargeRunStanDev = new TH2F("frameHitChargeRunStanDev","Standard Deviation of Hit Charge per Event", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 50);
+  frameHitChargeRunStanDev->GetXaxis()->SetTitle("Run Number");
+  frameHitChargeRunStanDev->GetYaxis()->SetTitle("ADC");
+  // frameHitChargeRunStanDev->GetYaxis()->SetTitleOffset(1.5);
   frameHitChargeRunStanDev->Draw();
 
   TLegend *lHitChargeRunStanDev = new TLegend(0.69,0.69,0.86,0.87);
@@ -190,7 +199,10 @@ void DetectorStabilityPlotMaker(){
   // Plot standard deviation of charge from hits as a function of date
   //
 
-  TH2F *frameHitChargeDateStanDev = new TH2F("","frameHitChargeDateStanDev", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 10);
+  TH2F *frameHitChargeDateStanDev = new TH2F("frameHitChargeDateStanDev","Standard Deviation of Hit Charge per Event", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 50);
+  frameHitChargeDateStanDev->GetXaxis()->SetTitle("Run Number");
+  frameHitChargeDateStanDev->GetYaxis()->SetTitle("ADC");
+  // frameHitChargeDateStanDev->GetYaxis()->SetTitleOffset(1.5);
   frameHitChargeDateStanDev->GetXaxis()->SetTitle("Date/Time");
   frameHitChargeDateStanDev->GetXaxis()->SetTimeDisplay(1);
   frameHitChargeDateStanDev->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -255,7 +267,10 @@ void DetectorStabilityPlotMaker(){
   // Plot average charge of hits per event in a run
   //
 
-  TH2F *frameHitChargeRun = new TH2F("","frameHitChargeRun", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 500);
+  TH2F *frameHitChargeRun = new TH2F("frameHitChargeRun","Average Hit Charge per Event", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 500);
+  frameHitChargeRun->GetXaxis()->SetTitle("Run Number");
+  frameHitChargeRun->GetYaxis()->SetTitle("ADC");
+  // frameHitChargeRun->GetYaxis()->SetTitleOffset(1.5);
   frameHitChargeRun->Draw();
 
   TLegend *lHitChargeRun = new TLegend(0.69,0.69,0.86,0.87);
@@ -305,7 +320,9 @@ void DetectorStabilityPlotMaker(){
   // Plot average charge of hits as a function of date
   //
 
-  TH2F *frameHitChargeDate = new TH2F("","frameHitChargeDate", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 500);
+  TH2F *frameHitChargeDate = new TH2F("frameHitChargeDate","Average Hit Charge per Event", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 500);
+  frameHitChargeDate->GetYaxis()->SetTitle("ADC");
+  // frameHitChargeDate->GetYaxis()->SetTitleOffset(1.5);
   frameHitChargeDate->Draw();
   frameHitChargeDate->GetXaxis()->SetTitle("Date/Time");
   frameHitChargeDate->GetXaxis()->SetTimeDisplay(1);
@@ -365,7 +382,10 @@ void DetectorStabilityPlotMaker(){
   // Plot average peak charge of hits per event in a run
   //
 
-  TH2F *frameHitPeakChargeRun = new TH2F("","frameHitPeakChargeRun", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 100);
+  TH2F *frameHitPeakChargeRun = new TH2F("frameHitPeakChargeRun","Average Hit Peak Charge per Event", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 75);
+  frameHitPeakChargeRun->GetYaxis()->SetTitle("ADC");
+  // frameHitPeakChargeRun->GetYaxis()->SetTitleOffset(1.5);
+  frameHitPeakChargeRun->GetXaxis()->SetTitle("Run Number");
   frameHitPeakChargeRun->Draw();
 
   TLegend *lHitPeakChargeRun = new TLegend(0.69,0.69,0.86,0.87);
@@ -420,7 +440,9 @@ void DetectorStabilityPlotMaker(){
   // Plot average peak charge of hits as a function of date
   //
 
-  TH2F *frameHitPeakChargeDate = new TH2F("","frameHitPeakChargeDate", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 100);
+  TH2F *frameHitPeakChargeDate = new TH2F("frameHitPeakChargeDate","Average Hit Peak Charge per Event", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 75);
+  frameHitPeakChargeDate->GetYaxis()->SetTitle("ADC");
+  // frameHitPeakChargeDate->GetYaxis()->SetTitleOffset(1.5);
   frameHitPeakChargeDate->Draw();
   frameHitPeakChargeDate->GetXaxis()->SetTitle("Date/Time");
   frameHitPeakChargeDate->GetXaxis()->SetTimeDisplay(1);
@@ -478,10 +500,13 @@ void DetectorStabilityPlotMaker(){
   // Plot averge number of flashes per event as a function of run
   //
 
-  TH2F *frameNumberFlashesRun = new TH2F("","frameNumberFlashesRun", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 200);
+  TH2F *frameNumberFlashesRun = new TH2F("frameNumberFlashesRun","Average Number of Flashes per Event", 1000, DetectorStabilityChain->GetMinimum("Run")-100, DetectorStabilityChain->GetMaximum("Run")+100, 1000, 0, 200);
+  frameNumberFlashesRun->GetYaxis()->SetTitle("Average Number of Flashes");
+  // frameNumberFlashesRun->GetYaxis()->SetTitleOffset(1.5);
+  frameNumberFlashesRun->GetXaxis()->SetTitle("Run Number");
   frameNumberFlashesRun->Draw();
 
-  TLegend *lNumberFlashesRun = new TLegend(0.69,0.69,0.86,0.87);
+  TLegend *lNumberFlashesRun = new TLegend(0.59,0.69,0.86,0.87);
   lNumberFlashesRun->SetFillColor(0);
   // leg->SetLineColor(0);
 
@@ -493,13 +518,13 @@ void DetectorStabilityPlotMaker(){
   lNumberFlashesRun->AddEntry(gNAllFlashesAverageRun ,"All Flashes","p");
 
   DetectorStabilityChain->SetMarkerStyle(8);
-  DetectorStabilityChain->SetMarkerColor(4);
+  DetectorStabilityChain->SetMarkerColor(2);
   DetectorStabilityChain->SetMarkerSize(1.0);
   DetectorStabilityChain->Draw("N50PEFlashesAverage:Run","","SAME");
   TGraph *gN50PEFlashesAverageRun  = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
   gN50PEFlashesAverageRun ->SetMarkerStyle(8);
-  gN50PEFlashesAverageRun ->SetMarkerColor(4);
-  lNumberFlashesRun->AddEntry(gN50PEFlashesAverageRun ,"","p");
+  gN50PEFlashesAverageRun ->SetMarkerColor(2);
+  lNumberFlashesRun->AddEntry(gN50PEFlashesAverageRun ,"Flashes > 50 PE","p");
 
   lNumberFlashesRun->Draw();
   c1->Print("NumberFlashesRun.png");
@@ -511,7 +536,9 @@ void DetectorStabilityPlotMaker(){
   //
 
 
-  TH2F *frameNumberFlashesDate = new TH2F("","frameNumberFlashesDate ", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 200);
+  TH2F *frameNumberFlashesDate = new TH2F("frameNumberFlashesDate","Average Number of Flashes per Event", 1000, DetectorStabilityChain->GetMinimum("EventTime")-100000, DetectorStabilityChain->GetMaximum("EventTime")+100000, 1000, 0, 200);
+  frameNumberFlashesDate->GetYaxis()->SetTitle("Average Number of Flashes");
+  // frameNumberFlashesDate->GetYaxis()->SetTitleOffset(1.5);
   frameNumberFlashesDate->Draw();
   frameNumberFlashesDate->GetXaxis()->SetTitle("Date/Time");
   frameNumberFlashesDate->GetXaxis()->SetTimeDisplay(1);
@@ -519,7 +546,7 @@ void DetectorStabilityPlotMaker(){
   frameNumberFlashesDate->GetXaxis()->SetLabelOffset(0.025);
   frameNumberFlashesDate->GetXaxis()->SetTitleOffset(1.5);
 
-  TLegend *lNumberFlashesDate = new TLegend(0.69,0.69,0.86,0.87);
+  TLegend *lNumberFlashesDate = new TLegend(0.59,0.69,0.86,0.87);
   lNumberFlashesDate->SetFillColor(0);
   // leg->SetLineColor(0);
 
@@ -531,13 +558,13 @@ void DetectorStabilityPlotMaker(){
   lNumberFlashesDate->AddEntry(gNAllFlashesAverageDate ,"All Flashes","p");
 
   DetectorStabilityChain->SetMarkerStyle(8);
-  DetectorStabilityChain->SetMarkerColor(4);
+  DetectorStabilityChain->SetMarkerColor(2);
   DetectorStabilityChain->SetMarkerSize(1.0);
   DetectorStabilityChain->Draw("N50PEFlashesAverage:EventTime","","SAME");
   TGraph *gN50PEFlashesAverageDate  = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
   gN50PEFlashesAverageDate ->SetMarkerStyle(8);
-  gN50PEFlashesAverageDate ->SetMarkerColor(4);
-  lNumberFlashesDate->AddEntry(gN50PEFlashesAverageDate ,"Flashese > 50 PE","p");
+  gN50PEFlashesAverageDate ->SetMarkerColor(2);
+  lNumberFlashesDate->AddEntry(gN50PEFlashesAverageDate ,"Flashes > 50 PE","p");
 
   lNumberFlashesDate->Draw();
   c1->Print("NumberFlashesDate.png");

@@ -67,10 +67,6 @@ void dQdxFitter(){
 
   TFile *f = new TFile("AnaTreeLoopWireVariation.root");
   TCanvas *c1 = new TCanvas("c1","Tree test");
-  TH1F *YWiredQdx = new TH1F("YWiredQdx","dQdx for Y Plane; Wire; dQ/dx [ADC/cm]",3456,0,3456);
-  YWiredQdx->SetMaximum(750);
-  YWiredQdx->SetMarkerStyle(2);
-  YWiredQdx->SetMarkerSize(0.5);
   TH1F *UWiredQdx = new TH1F("UWiredQdx","dQdx for U Plane; Wire; dQ/dx [ADC/cm]",2400,0,2400);
   UWiredQdx->SetMaximum(750);
   UWiredQdx->SetMarkerStyle(2);
@@ -79,11 +75,25 @@ void dQdxFitter(){
   VWiredQdx->SetMaximum(750);
   VWiredQdx->SetMarkerStyle(2);
   VWiredQdx->SetMarkerSize(0.5);
-  
-  TH1F *YWiredQdxWidth = new TH1F("YWiredQdxWidth","dQdx Width for Y Plane; Wire; dQ/dx [ADC/cm]",3456,0,3456);
-  YWiredQdxWidth->SetMaximum(200);
-  YWiredQdxWidth->SetMarkerStyle(2);
-  YWiredQdxWidth->SetMarkerSize(0.5);
+  TH1F *YWiredQdx = new TH1F("YWiredQdx","dQdx for Y Plane; Wire; dQ/dx [ADC/cm]",3456,0,3456);
+  YWiredQdx->SetMaximum(750);
+  YWiredQdx->SetMarkerStyle(2);
+  YWiredQdx->SetMarkerSize(0.5);
+
+  TH1F *UWiredQdxGainCorrected = new TH1F("UWiredQdxGainCorrected","Gain Corrected dQdx for U Plane; Wire; dQ/dx [ADC/cm]",2400,0,2400);
+  UWiredQdxGainCorrected->SetMaximum(750);
+  UWiredQdxGainCorrected->SetMarkerStyle(2);
+  UWiredQdxGainCorrected->SetMarkerSize(0.5);
+  TH1F *VWiredQdxGainCorrected  = new TH1F("VWiredQdxGainCorrected","Gain Corrected dQdx for V Plane; Wire; dQ/dx [ADC/cm]",2400,0,2400);
+  VWiredQdxGainCorrected->SetMaximum(750);
+  VWiredQdxGainCorrected->SetMarkerStyle(2);
+  VWiredQdxGainCorrected->SetMarkerSize(0.5);
+  TH1F *YWiredQdxGainCorrected = new TH1F("YWiredQdxGainCorrected","Gain Corrected dQdx for Y Plane; Wire; dQ/dx [ADC/cm]",3456,0,3456);
+  YWiredQdxGainCorrected->SetMaximum(5000);
+  YWiredQdxGainCorrected->SetMarkerStyle(2);
+  YWiredQdxGainCorrected->SetMarkerSize(0.5);
+
+
   TH1F *UWiredQdxWidth  = new TH1F("UWiredQdxWidth","dQdx Width for U Plane; Wire; dQ/dx [ADC/cm]",2400,0,2400);
   UWiredQdxWidth->SetMaximum(200);
   UWiredQdxWidth->SetMarkerStyle(2);
@@ -92,9 +102,20 @@ void dQdxFitter(){
   VWiredQdxWidth->SetMaximum(200);
   VWiredQdxWidth->SetMarkerStyle(2);
   VWiredQdxWidth->SetMarkerSize(0.5);
+  TH1F *YWiredQdxWidth = new TH1F("YWiredQdxWidth","dQdx Width for Y Plane; Wire; dQ/dx [ADC/cm]",3456,0,3456);
+  YWiredQdxWidth->SetMaximum(200);
+  YWiredQdxWidth->SetMarkerStyle(2);
+  YWiredQdxWidth->SetMarkerSize(0.5);
 
   gStyle->SetOptFit(1111);
- 
+
+
+   // Get gain histogram
+   TFile *fGain = new TFile("20160204_PulserGain_Run3048.root");
+   TH1F *hGainVsChan = (TH1F*)fGain->Get("hGainVsChan");
+
+
+
   // Create stopwatch for timing fits
   TStopwatch *stopwatch = new TStopwatch();
   double totalYFitTime = 0;
@@ -112,17 +133,20 @@ void dQdxFitter(){
   // // for(int i=1000; i < 1100; i++){
   //   stopwatch->Start();
   //   TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/u_plane/hUPlanedQdx_"+(TString)Form("%d",i));
-    
+
+  //   // Get gain for this wire
+  //   double fWireGain = hGainVsChan->GetBinContent(i);
+
   //   // Make sure we have a good number of entries before fitting
   //   if(hdQdx->GetEntries() < 100){
   //     UWiredQdx->SetBinContent(i+1,0);
   //     continue;
   //   }
-  //   TF1 *landaugaus = new TF1("func",langaufun,0,3000,4);
+  //   TF1 *landaugaus = new TF1("func",langaufun,0,1000,4);
   //   landaugaus->SetParameter(0,20);
-  //   landaugaus->SetParLimits(0,5,35);
-  //   landaugaus->SetParameter(1,hdQdx->GetMean());
-  //   landaugaus->SetParLimits(1,0.5*hdQdx->GetMean(),1.5*hdQdx->GetMean());
+  //   landaugaus->SetParLimits(0,10,50);
+  //   landaugaus->SetParameter(1,0.8* hdQdx->GetMean());
+  //   landaugaus->SetParLimits(1,0.6*hdQdx->GetMean(),1.*hdQdx->GetMean());
   //   // landaugaus->SetParameter(2,20000);
   //   landaugaus->SetParameter(2,1e4);
   //   // landaugaus->SetParameter(3,hdQdx->GetRMS());
@@ -135,6 +159,7 @@ void dQdxFitter(){
   //   //     landaugaus->GetProb() > 0.01)
   //   if(landaugaus->GetParameter(1) > 0){
   //     UWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+  //     UWiredQdxGainCorrected->SetBinContent(i+1,fWireGain*landaugaus->GetParameter(1));
   //     UWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
   //   }
   //   c1->Print("hUPlanedQdx_"+(TString)Form("%d",i)+".png");
@@ -146,6 +171,9 @@ void dQdxFitter(){
   // UWiredQdx->Draw("P");
   // c1->Print("UPlanedQdx.png");
   // c1->Print("UPlanedQdx.C");
+  // UWiredQdxGainCorrected->Draw("P");
+  // c1->Print("UPlanedQdxGainCorrected.png");
+  // c1->Print("UPlanedQdxGainCorrected.C");
   // UWiredQdxWidth->Draw("P");
   // c1->Print("UPlanedQdxWidth.png");
   // c1->Print("UPlanedQdxWidth.C");
@@ -158,17 +186,20 @@ void dQdxFitter(){
   // // for(int i=1000; i < 1100; i++){
   //   stopwatch->Start();
   //   TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/v_plane/hVPlanedQdx_"+(TString)Form("%d",i));
-    
+
+    // // Get gain for this wire
+    // double fWireGain = hGainVsChan->GetBinContent(2400+i);
+
   //   // Make sure we have a good number of entries before fitting
   //   if(hdQdx->GetEntries() < 100){
   //     VWiredQdx->SetBinContent(i+1,0);
   //     continue;
   //   }
-  //   TF1 *landaugaus = new TF1("func",langaufun,0,3000,4);
+  //   TF1 *landaugaus = new TF1("func",langaufun,0,1000,4);
   //   landaugaus->SetParameter(0,20);
-  //   landaugaus->SetParLimits(0,5,35);
-  //   landaugaus->SetParameter(1,hdQdx->GetMean());
-  //   landaugaus->SetParLimits(1,0.5*hdQdx->GetMean(),1.5*hdQdx->GetMean());
+  //   landaugaus->SetParLimits(0,10,50);
+  //   landaugaus->SetParameter(1,0.8* hdQdx->GetMean());
+  //   landaugaus->SetParLimits(1,0.6*hdQdx->GetMean(),1.*hdQdx->GetMean());
   //   landaugaus->SetParameter(2,1e4);
   //   // landaugaus->SetParameter(3,hdQdx->GetRMS());
   //   landaugaus->SetParameter(3,100);
@@ -180,6 +211,7 @@ void dQdxFitter(){
   //   //     landaugaus->GetProb() > 0.01)
   //   if(landaugaus->GetParameter(1) > 0){
   //     VWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+      // VWiredQdxGainCorrected->SetBinContent(i+1,fWireGain*landaugaus->GetParameter(1));
   //     VWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
   //   }
   //   c1->Print("hVPlanedQdx_"+(TString)Form("%d",i)+".png");
@@ -191,6 +223,9 @@ void dQdxFitter(){
   // VWiredQdx->Draw("P");
   // c1->Print("VPlanedQdx.png");
   // c1->Print("VPlanedQdx.C");
+  // VWiredQdxGainCorrected->Draw("P");
+  // c1->Print("VPlanedQdxGainCorrected.png");
+  // c1->Print("VPlanedQdxGainCorrected.C");
   // VWiredQdxWidth->Draw("P");
   // c1->Print("VPlanedQdxWidth.png");
   // c1->Print("VPlanedQdxWidth.C");
@@ -202,16 +237,19 @@ void dQdxFitter(){
     stopwatch->Start();
     TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/y_plane/hYPlanedQdx_"+(TString)Form("%d",i));
 
+    // Get gain for this wire
+    double fWireGain = hGainVsChan->GetBinContent(2400+2400+i);
+
     // Make sure we have a good number of entries before fitting
     if(hdQdx->GetEntries() < 100){
       YWiredQdx->SetBinContent(i+1,0);
       continue;
     }
     TF1 *landaugaus = new TF1("func",langaufun,0,8000,4);
-    landaugaus->SetParameter(0,20);
-    landaugaus->SetParLimits(0,5,35);
-    landaugaus->SetParameter(1,hdQdx->GetMean());
-    landaugaus->SetParLimits(1,0.5*hdQdx->GetMean(),1.5*hdQdx->GetMean());
+    landaugaus->SetParameter(0,30);
+    landaugaus->SetParLimits(0,10,50);
+    landaugaus->SetParameter(1,0.8* hdQdx->GetMean());
+    landaugaus->SetParLimits(1,0.6*hdQdx->GetMean(),1.*hdQdx->GetMean());
     // landaugaus->SetParameter(2,20000);
     landaugaus->SetParameter(2,1e4);
     // landaugaus->SetParameter(3,hdQdx->GetRMS());
@@ -224,6 +262,7 @@ void dQdxFitter(){
     //     landaugaus->GetProb() > 0.01)
     if(landaugaus->GetParameter(1) > 0){
       YWiredQdx->SetBinContent(i+1,landaugaus->GetParameter(1));
+      YWiredQdxGainCorrected->SetBinContent(i+1,fWireGain*landaugaus->GetParameter(1));
       YWiredQdxWidth->SetBinContent(i+1,landaugaus->GetParameter(3));
     }
     c1->Print("hYPlanedQdx_"+(TString)Form("%d",i)+".png");
@@ -235,6 +274,9 @@ void dQdxFitter(){
   YWiredQdx->Draw("P");
   c1->Print("YPlanedQdx.png");
   c1->Print("YPlanedQdx.C");
+  YWiredQdxGainCorrected->Draw("P");
+  c1->Print("YPlanedQdxGainCorrected.png");
+  c1->Print("YPlanedQdxGainCorrected.C");
   YWiredQdxWidth->Draw("P");
   c1->Print("YPlanedQdxWidth.png");
   c1->Print("YPlanedQdxWidth.C");

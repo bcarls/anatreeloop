@@ -63,9 +63,15 @@ void AnaTreeLoopDataStability::Loop()
    Double_t VHitPeakChargeStanDev = 0;
    Double_t YHitPeakChargeStanDev = 0;
    Double_t NAllFlashes = 0;
-   Double_t N50PEFlashes = 0;
+   Double_t NFlashes50PE = 0;
    Double_t NAllFlashesAverage = 0;
-   Double_t N50PEFlashesAverage = 0;
+   Double_t NFlashes50PEAverage = 0;
+
+   Double_t FlashZCenter = 0;
+   Double_t FlashZCenter50PE = 0;
+   Double_t FlashZCenterAverage = 0;
+   Double_t FlashZCenter50PEAverage = 0;
+   
    int fCurrentRun = 0;  
    int fNEventsInRun = 0;  
    int fNRuns = 0;
@@ -107,7 +113,9 @@ void AnaTreeLoopDataStability::Loop()
    DetectorStabilityTree->Branch("NYHitsAverage",&NYHitsAverage,"NYHitsAverage/D");
 
    DetectorStabilityTree->Branch("NAllFlashesAverage",&NAllFlashesAverage,"NAllFlashesAverage/D");
-   DetectorStabilityTree->Branch("N50PEFlashesAverage",&N50PEFlashesAverage,"N50PEFlashesAverage/D");
+   DetectorStabilityTree->Branch("NFlashes50PEAverage",&NFlashes50PEAverage,"NFlashes50PEAverage/D");
+   DetectorStabilityTree->Branch("FlashZCenterAverage",&FlashZCenterAverage,"FlashZCenterAverage/D");
+   DetectorStabilityTree->Branch("FlashZCenter50PEAverage",&FlashZCenter50PEAverage,"FlashZCenter50PEAverage/D");
   
    // Turn off all branches, this speeds stuff up
    fChain->SetBranchStatus("*",0);
@@ -176,8 +184,10 @@ void AnaTreeLoopDataStability::Loop()
          TotalHitPeakChargeNoPlaneAverage = (double)TotalHitPeakChargeNoPlane/(double)NTotalHitsNoPlane;
          
          NAllFlashesAverage = (double)NAllFlashes/(double)fNEventsInRun;
-         N50PEFlashesAverage = (double)N50PEFlashes/(double)fNEventsInRun;
-         
+         NFlashes50PEAverage = (double)NFlashes50PE/(double)fNEventsInRun;
+         FlashZCenterAverage = (double)FlashZCenter/(double)NAllFlashes;
+         FlashZCenter50PEAverage = (double)FlashZCenter50PE/(double)NFlashes50PE;
+
 
          // Find the standard deviations 
          // Loop over hits
@@ -247,7 +257,9 @@ void AnaTreeLoopDataStability::Loop()
          TotalHitPeakChargeInPlaneStanDev = 0;
          TotalHitPeakChargeNoPlaneStanDev = 0;
          NAllFlashes = 0;
-         N50PEFlashes = 0;
+         NFlashes50PE = 0;
+         FlashZCenter = 0;
+         FlashZCenter50PE = 0;
          fNEventsInRun = 0;
 
       }
@@ -290,8 +302,11 @@ void AnaTreeLoopDataStability::Loop()
       // Loop over flashes 
       NAllFlashes += ana_tree_flash->NFlashes();
       for (int i = 0; i < ana_tree_flash->NFlashes(); i++){
-         if(ana_tree_flash->FlashPE(i) > 50)
-            N50PEFlashes++;
+         FlashZCenter+=ana_tree_flash->FlashZCenter(i);
+         if(ana_tree_flash->FlashPE(i) > 50){
+            NFlashes50PE++;
+            FlashZCenter50PE+=ana_tree_flash->FlashZCenter(i);
+         }
       }
 
    }
@@ -330,7 +345,9 @@ void AnaTreeLoopDataStability::Loop()
    TotalHitPeakChargeNoPlaneAverage = (double)TotalHitPeakChargeNoPlane/(double)NTotalHitsNoPlane;
 
    NAllFlashesAverage = (double)NAllFlashes/(double)fNEventsInRun;
-   N50PEFlashesAverage = (double)N50PEFlashes/(double)fNEventsInRun;
+   NFlashes50PEAverage = (double)NFlashes50PE/(double)fNEventsInRun;
+   FlashZCenterAverage = (double)FlashZCenter/(double)NAllFlashes;
+   FlashZCenter50PEAverage = (double)FlashZCenter50PE/(double)NFlashes50PE;
    
    // Find the standard deviations 
    // Loop over hits

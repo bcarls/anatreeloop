@@ -49,8 +49,8 @@ def main(argv):
 
     t.SetNEvents(nevts)
     t.SetNEventsToReport(1000)
-    t.SetTrackModule("trackkalmanhit")
-    # t.SetTrackModule("trackkalmanhitcc")
+    # t.SetTrackModule("trackkalmanhit")
+    t.SetTrackModule("trackkalmanhitcc")
     # t.SetTrackModule("pandoraCosmicKHit")
     # t.SetVertexModule("pandoraCosmic")
 
