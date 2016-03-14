@@ -18,5 +18,6 @@
 #pragma link C++ class AnaTreeLoopWireVariation+;
 #pragma link C++ class AnaTreeLoopClusterLinearity+;
 #pragma link C++ class AnaTreeLoopMCStudy+;
+#pragma link C++ class AnaTreeLoopEventDisplay+;
 
 #endif
