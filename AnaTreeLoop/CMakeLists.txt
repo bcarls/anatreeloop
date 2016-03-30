@@ -6,6 +6,8 @@ link_directories($ENV{ROOTLIB})
 
 include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS})
 add_definitions(${ROOT_CXX_FLAGS})
+# Turn on compile warnings
+add_definitions("-Wall")
 
 # You need to tell CMake where to find the ROOT installation. This can be done in a number of ways:
 #   - ROOT built with classic configure/make use the provided $ROOTSYS/etc/cmake/FindROOT.cmake
@@ -18,7 +20,7 @@ find_package(ROOT REQUIRED COMPONENTS MathCore RIO Hist Tree Net)
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
-ROOT_GENERATE_DICTIONARY(G__AnaTreeLoop AnaTreeLoop/AnaTreeLoopEventDisplay.h AnaTreeLoop/AnaTreeLoopMCStudy.h AnaTreeLoop/AnaTreeLoopClusterLinearity.h AnaTreeLoop/AnaTreeLoopDataStability.h AnaTreeLoop/AnaTreeLoopWireVariation.h AnaTreeLoop/AnaTreeLoop.h AnaTreeLoop/AnaTreeLoopData.h AnaTreeLoop/AnaTreeTracks.h AnaTreeLoop/AnaTreeMCTracks.h AnaTreeLoop/AnaTreeClusters.h AnaTreeLoop/AnaTreeVertex.h AnaTreeLoop/AnaTreeFlash.h AnaTreeLoop/AnaTreeHits.h AnaTreeLoop/AnaTreeRunInfo.h AnaTreeLoop/AnaTreeAlgs.h LINKDEF AnaTreeLoop/AnaTreeLoopLinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__AnaTreeLoop AnaTreeLoop/AnaTreeLoopEventDisplay.h AnaTreeLoop/AnaTreeLoopMCStudy.h AnaTreeLoop/AnaTreeLoopClusterLinearity.h AnaTreeLoop/AnaTreeLoopDataStability.h AnaTreeLoop/AnaTreeLoopMVATreeProducerDemo.h AnaTreeLoop/AnaTreeLoopWireVariation.h AnaTreeLoop/AnaTreeLoop.h AnaTreeLoop/AnaTreeLoopData.h AnaTreeLoop/AnaTreeTracks.h AnaTreeLoop/AnaTreeMCTracks.h AnaTreeLoop/AnaTreeClusters.h AnaTreeLoop/AnaTreeVertex.h AnaTreeLoop/AnaTreeFlash.h AnaTreeLoop/AnaTreeHits.h AnaTreeLoop/AnaTreeRunInfo.h AnaTreeLoop/AnaTreeAlgs.h LINKDEF AnaTreeLoop/AnaTreeLoopLinkDef.h)
 
 # and compile src into a library
 add_library(AnaTreeLoop SHARED ${SOME_PROJ_LIB_SRCS} G__AnaTreeLoop.cxx)

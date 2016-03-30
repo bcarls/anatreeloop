@@ -11,6 +11,21 @@
 #include "TStopwatch.h"
 #include <fstream>
 
+// Returns the plane for a given channel
+// 0 for U, 1 for V, 2 for Y
+Short_t ChannelToPlane(Short_t channel){
+
+  if(channel < 2400)
+    return 0;
+  if(2400 <= channel && channel < 2*2400)
+    return 1;
+  if(2*2400 <= channel)
+    return 2;
+  return -999;
+}
+
+
+
 Double_t langaufun(Double_t *x, Double_t *par) {
 
    //Fit parameters:
@@ -258,9 +273,10 @@ void dQdxFitter(){
   hVPlanedQdxAllWires->Sumw2();
   TH1F *hYPlanedQdxAllWires = new TH1F("hYPlanedQdxAllWires","dQdx for All Wires in Y Plane;dQ/dx [ADC/cm];Hits",75,0,2000);
   hYPlanedQdxAllWires->Sumw2();
-  std::map<Short_t, Float_t> channelTodQdxUPlane;
-  std::map<Short_t, Float_t> channelTodQdxVPlane;
-  std::map<Short_t, Float_t> channelTodQdxYPlane;
+  // std::map<Short_t, Float_t> channelTodQdxUPlane;
+  // std::map<Short_t, Float_t> channelTodQdxVPlane;
+  // std::map<Short_t, Float_t> channelTodQdxYPlane;
+  std::map<Short_t, Float_t> channelTodQdx;
 
   gStyle->SetOptFit(1111);
 
@@ -306,13 +322,14 @@ void dQdxFitter(){
     if(hdQdx->GetEntries() < 100){
       UWiredQdx->SetBinContent(i+1,0);
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxUPlane.insert(std::pair<Short_t, Float_t>(i,-999999));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(i,-999999));
       continue;
     }
     // Setting fit range and start values
     Double_t fr[2];
     Double_t sv[4], pllo[4], plhi[4], fp[4], fpe[4];
-    fr[0]=0; fr[1]=1000;
+    // fr[0]=200; fr[1]=1000;
+    fr[0]=0.6*1.0*hdQdx->GetMean(); fr[1]=1000;
     sv[0]=20;
     pllo[0]=10; plhi[0]=50;
     sv[1]=0.8*hdQdx->GetMean();
@@ -334,7 +351,7 @@ void dQdxFitter(){
       UWiredQdxWidth->SetBinContent(i+1,fp[3]);
       // Insert channel and MPV into the channel to dQdx map
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxUPlane.insert(std::pair<Short_t, Float_t>(i,fp[1]));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(i,fp[1]));
       // Fill TTree
       fTTreePlane = 0;
       fTTreeChannel = i;
@@ -351,9 +368,9 @@ void dQdxFitter(){
   UWiredQdx->Draw("P");
   c1->Print("UPlanedQdx.png");
   c1->Print("UPlanedQdx.C");
-  UWiredQdxGainCorrected->Draw("P");
-  c1->Print("UPlanedQdxGainCorrected.png");
-  c1->Print("UPlanedQdxGainCorrected.C");
+  // UWiredQdxGainCorrected->Draw("P");
+  // c1->Print("UPlanedQdxGainCorrected.png");
+  // c1->Print("UPlanedQdxGainCorrected.C");
   UWiredQdxWidth->Draw("P");
   c1->Print("UPlanedQdxWidth.png");
   c1->Print("UPlanedQdxWidth.C");
@@ -375,13 +392,14 @@ void dQdxFitter(){
     if(hdQdx->GetEntries() < 100){
       VWiredQdx->SetBinContent(i+1,0);
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxVPlane.insert(std::pair<Short_t, Float_t>(2400+i,-999999));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(2400+i,-999999));
       continue;
     }
     // Setting fit range and start values
     Double_t fr[2];
     Double_t sv[4], pllo[4], plhi[4], fp[4], fpe[4];
-    fr[0]=0; fr[1]=1000;
+    // fr[0]=0; fr[1]=1000;
+    fr[0]=0.5*1.0*hdQdx->GetMean(); fr[1]=1000;
     sv[0]=20;
     pllo[0]=10; plhi[0]=50;
     sv[1]=0.8*hdQdx->GetMean();
@@ -403,7 +421,7 @@ void dQdxFitter(){
       VWiredQdxWidth->SetBinContent(i+1,fp[3]);
       // Insert channel and MPV into the channel to dQdx map
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxVPlane.insert(std::pair<Short_t, Float_t>(i+2400,fp[1]));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(i+2400,fp[1]));
       // Fill TTree
       fTTreePlane = 0;
       fTTreeChannel = i;
@@ -430,7 +448,7 @@ void dQdxFitter(){
   
   // Do the Y Plane
   for(int i=0; i < 3456; i++){
-  // for(int i=1000; i < 1100; i++){
+  // for(int i=1000; i < 1010; i++){
     stopwatch->Start();
     TH1F *hdQdx = (TH1F*)f->Get("hit_dqdx/y_plane/hYPlanedQdx_"+(TString)Form("%d",i));
     hYPlanedQdxAllWires->Add(hdQdx);
@@ -442,13 +460,13 @@ void dQdxFitter(){
     if(hdQdx->GetEntries() < 100){
       YWiredQdx->SetBinContent(i+1,0);
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxYPlane.insert(std::pair<Short_t, Float_t>(2400+2400+i,-999999));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(2400+2400+i,-999999));
       continue;
     }
     // Setting fit range and start values
     Double_t fr[2];
     Double_t sv[4], pllo[4], plhi[4], fp[4], fpe[4];
-    fr[0]=0; fr[1]=2000;
+    fr[0]=0.5*1.0*hdQdx->GetMean(); fr[1]=2000;
     sv[0]=30;
     pllo[0]=10; plhi[0]=50;
     sv[1]=0.8*hdQdx->GetMean();
@@ -470,7 +488,7 @@ void dQdxFitter(){
       YWiredQdxWidth->SetBinContent(i+1,fp[3]);
       // Insert channel and MPV into the channel to dQdx map
       std::pair<std::map<Short_t, Float_t >::iterator,bool> ret;
-      ret = channelTodQdxYPlane.insert(std::pair<Short_t, Float_t>(2400+2400+i,fp[1]));
+      ret = channelTodQdx.insert(std::pair<Short_t, Float_t>(2400+2400+i,fp[1]));
       // Fill TTree
       fTTreePlane = 0;
       fTTreeChannel = i;
@@ -494,9 +512,9 @@ void dQdxFitter(){
   c1->Print("YPlanedQdxWidth.png");
   c1->Print("YPlanedQdxWidth.C");
 
-   TFile fTTree("WireVariationCalibTree.root","recreate");
-   WireVariationCalibTree->Write();
-   fTTree.Close();
+  TFile fTTree("WireVariationCalibTree.root","recreate");
+  WireVariationCalibTree->Write();
+  fTTree.Close();
 
   if(totalYFits!= 0) std::cout << "Average time per Y wire fit: " << totalYFitTime/totalYFits << std::endl;
   if(totalUFits!= 0) std::cout << "Average time per U wire fit: " << totalUFitTime/totalUFits << std::endl;
@@ -515,121 +533,166 @@ void dQdxFitter(){
 
   // U Plane 
   // Setting fit range and start values
-  Double_t frUPlane[2];
-  Double_t svUPlane[4], plloUPlane[4], plhiUPlane[4], fpUPlane[4], fpeUPlane[4];
-  frUPlane[0]=0; frUPlane[1]=2000;
-  svUPlane[0]=30;
-  plloUPlane[0]=10; plhiUPlane[0]=50;
-  svUPlane[1]=0.8*hUPlanedQdxAllWires->GetMean();
-  plloUPlane[1]=0.6*hUPlanedQdxAllWires->GetMean(); plhiUPlane[1]=1.0*hUPlanedQdxAllWires->GetMean(); 
-  svUPlane[2]=50000.0; 
-  plloUPlane[2]=1.0; plhiUPlane[2]=100000000.0; 
-  svUPlane[3]=100;
-  plloUPlane[3]=1; plhiUPlane[3]=200;
-  Double_t chisqrUPlane;
-  Int_t    ndfUPlane;
-  TF1 *fitsnrUPlane = langaufit(hUPlanedQdxAllWires,frUPlane,svUPlane,plloUPlane,plhiUPlane,fpUPlane,fpeUPlane,&chisqrUPlane,&ndfUPlane);
-  Double_t SNRPeakUPlane, SNRFWHMUPlane;
-  langaupro(fpUPlane,SNRPeakUPlane,SNRFWHMUPlane);
-  hUPlanedQdxAllWires->Draw();
-  fitsnrUPlane->Draw("SAME");
-  c1->Print("UPlanedQdxAllWires.png");
-  c1->Print("UPlanedQdxAllWires.C");
-  // Determine the correction
-  for(auto channelTodQdxItr = channelTodQdxUPlane.begin(); 
-      channelTodQdxItr != channelTodQdxUPlane.end();
-      channelTodQdxItr++){
-    if(channelTodQdxItr->second < 0){
-      std::cout << "Channel: " << channelTodQdxItr->first 
-        << " Channel dQ/dx: " << channelTodQdxItr->second
-        << " Correction: " 
-        << 1 
-        << std::endl;
-      dQdxCalibration << channelTodQdxItr->first << " " << 1 << std::endl;
-      continue;
-    }
-    std::cout << "Channel: " << channelTodQdxItr->first 
-      << " Channel dQ/dx: " << channelTodQdxItr->second
-      << " Correction: " 
-      << fpUPlane[1]/channelTodQdxItr->second 
-      << std::endl;
-      dQdxCalibration << channelTodQdxItr->first << " " << fpUPlane[1]/channelTodQdxItr->second << std::endl;
+  // Double_t frUPlane[2];
+  // Double_t svUPlane[4], plloUPlane[4], plhiUPlane[4], fpUPlane[4], fpeUPlane[4];
+  // frUPlane[0]=0; frUPlane[1]=1000;
+  // svUPlane[0]=30;
+  // plloUPlane[0]=10; plhiUPlane[0]=50;
+  // svUPlane[1]=0.8*hUPlanedQdxAllWires->GetMean();
+  // plloUPlane[1]=0.6*hUPlanedQdxAllWires->GetMean(); plhiUPlane[1]=1.0*hUPlanedQdxAllWires->GetMean(); 
+  // svUPlane[2]=50000.0; 
+  // plloUPlane[2]=1.0; plhiUPlane[2]=1e10; 
+  // svUPlane[3]=100;
+  // plloUPlane[3]=1; plhiUPlane[3]=200;
+  // Double_t chisqrUPlane;
+  // Int_t    ndfUPlane;
+  // TF1 *fitsnrUPlane = langaufit(hUPlanedQdxAllWires,frUPlane,svUPlane,plloUPlane,plhiUPlane,fpUPlane,fpeUPlane,&chisqrUPlane,&ndfUPlane);
+  // Double_t SNRPeakUPlane, SNRFWHMUPlane;
+  // langaupro(fpUPlane,SNRPeakUPlane,SNRFWHMUPlane);
+  // hUPlanedQdxAllWires->Draw();
+  // fitsnrUPlane->Draw("SAME");
+  // c1->Print("UPlanedQdxAllWiresFit.png");
+  // c1->Print("UPlanedQdxAllWiresFit.C");
+  // // Determine the correction
+  // for(auto channelTodQdxItr = channelTodQdxUPlane.begin(); 
+  //     channelTodQdxItr != channelTodQdxUPlane.end();
+  //     channelTodQdxItr++){
+  //   if(channelTodQdxItr->second < 0){
+  //     std::cout << "Channel: " << channelTodQdxItr->first 
+  //       << " Channel dQ/dx: " << channelTodQdxItr->second
+  //       << " Correction: " 
+  //       << 1 
+  //       << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << 1 << std::endl;
+  //     continue;
+  //   }
+  //   std::cout << "Channel: " << channelTodQdxItr->first 
+  //     << " Channel dQ/dx: " << channelTodQdxItr->second
+  //     << " Correction: " 
+  //     << fpUPlane[1]/channelTodQdxItr->second 
+  //     << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << fpUPlane[1]/channelTodQdxItr->second << std::endl;
     
-  }
+  // }
 
   
   
   // V Plane 
   // Setting fit range and start values
-  Double_t frVPlane[2];
-  Double_t svVPlane[4], plloVPlane[4], plhiVPlane[4], fpVPlane[4], fpeVPlane[4];
-  frVPlane[0]=0; frVPlane[1]=2000;
-  svVPlane[0]=30;
-  plloVPlane[0]=10; plhiVPlane[0]=50;
-  svVPlane[1]=0.8*hVPlanedQdxAllWires->GetMean();
-  plloVPlane[1]=0.6*hVPlanedQdxAllWires->GetMean(); plhiVPlane[1]=1.0*hVPlanedQdxAllWires->GetMean(); 
-  svVPlane[2]=50000.0; 
-  plloVPlane[2]=1.0; plhiVPlane[2]=100000000.0; 
-  svVPlane[3]=100;
-  plloVPlane[3]=1; plhiVPlane[3]=200;
-  Double_t chisqrVPlane;
-  Int_t    ndfVPlane;
-  TF1 *fitsnrVPlane = langaufit(hVPlanedQdxAllWires,frVPlane,svVPlane,plloVPlane,plhiVPlane,fpVPlane,fpeVPlane,&chisqrVPlane,&ndfVPlane);
-  Double_t SNRPeakVPlane, SNRFWHMVPlane;
-  langaupro(fpVPlane,SNRPeakVPlane,SNRFWHMVPlane);
-  hVPlanedQdxAllWires->Draw();
-  fitsnrVPlane->Draw("SAME");
-  c1->Print("VPlanedQdxAllWires.png");
-  c1->Print("VPlanedQdxAllWires.C");
-  // Determine the correction
-  for(auto channelTodQdxItr = channelTodQdxVPlane.begin(); 
-      channelTodQdxItr != channelTodQdxVPlane.end();
-      channelTodQdxItr++){
-    if(channelTodQdxItr->second < 0){
-      std::cout << "Channel: " << channelTodQdxItr->first 
-        << " Channel dQ/dx: " << channelTodQdxItr->second
-        << " Correction: " 
-        << 1 
-        << std::endl;
-      dQdxCalibration << channelTodQdxItr->first << " " << 1 << std::endl;
-      continue;
-    }
-    std::cout << "Channel: " << channelTodQdxItr->first 
-      << " Channel dQ/dx: " << channelTodQdxItr->second
-      << " Correction: " 
-      << fpVPlane[1]/channelTodQdxItr->second 
-      << std::endl;
-      dQdxCalibration << channelTodQdxItr->first << " " << fpVPlane[1]/channelTodQdxItr->second << std::endl;
-  }
+  // Double_t frVPlane[2];
+  // Double_t svVPlane[4], plloVPlane[4], plhiVPlane[4], fpVPlane[4], fpeVPlane[4];
+  // frVPlane[0]=0; frVPlane[1]=2000;
+  // svVPlane[0]=30;
+  // plloVPlane[0]=10; plhiVPlane[0]=50;
+  // svVPlane[1]=0.8*hVPlanedQdxAllWires->GetMean();
+  // plloVPlane[1]=0.6*hVPlanedQdxAllWires->GetMean(); plhiVPlane[1]=1.0*hVPlanedQdxAllWires->GetMean(); 
+  // svVPlane[2]=50000.0; 
+  // plloVPlane[2]=1.0; plhiVPlane[2]=1e10; 
+  // svVPlane[3]=100;
+  // plloVPlane[3]=1; plhiVPlane[3]=200;
+  // Double_t chisqrVPlane;
+  // Int_t    ndfVPlane;
+  // TF1 *fitsnrVPlane = langaufit(hVPlanedQdxAllWires,frVPlane,svVPlane,plloVPlane,plhiVPlane,fpVPlane,fpeVPlane,&chisqrVPlane,&ndfVPlane);
+  // Double_t SNRPeakVPlane, SNRFWHMVPlane;
+  // langaupro(fpVPlane,SNRPeakVPlane,SNRFWHMVPlane);
+  // hVPlanedQdxAllWires->Draw();
+  // fitsnrVPlane->Draw("SAME");
+  // c1->Print("VPlanedQdxAllWires.png");
+  // c1->Print("VPlanedQdxAllWires.C");
+  // // Determine the correction
+  // for(auto channelTodQdxItr = channelTodQdxVPlane.begin(); 
+  //     channelTodQdxItr != channelTodQdxVPlane.end();
+  //     channelTodQdxItr++){
+  //   if(channelTodQdxItr->second < 0){
+  //     std::cout << "Channel: " << channelTodQdxItr->first 
+  //       << " Channel dQ/dx: " << channelTodQdxItr->second
+  //       << " Correction: " 
+  //       << 1 
+  //       << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << 1 << std::endl;
+  //     continue;
+  //   }
+  //   std::cout << "Channel: " << channelTodQdxItr->first 
+  //     << " Channel dQ/dx: " << channelTodQdxItr->second
+  //     << " Correction: " 
+  //     << fpVPlane[1]/channelTodQdxItr->second 
+  //     << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << fpVPlane[1]/channelTodQdxItr->second << std::endl;
+  // }
 
 
 
 
   // Y Plane 
   // Setting fit range and start values
-  Double_t frYPlane[2];
-  Double_t svYPlane[4], plloYPlane[4], plhiYPlane[4], fpYPlane[4], fpeYPlane[4];
-  frYPlane[0]=0; frYPlane[1]=2000;
-  svYPlane[0]=30;
-  plloYPlane[0]=10; plhiYPlane[0]=50;
-  svYPlane[1]=0.8*hYPlanedQdxAllWires->GetMean();
-  plloYPlane[1]=0.6*hYPlanedQdxAllWires->GetMean(); plhiYPlane[1]=1.0*hYPlanedQdxAllWires->GetMean(); 
-  svYPlane[2]=50000.0; 
-  plloYPlane[2]=1.0; plhiYPlane[2]=100000000.0; 
-  svYPlane[3]=100;
-  plloYPlane[3]=1; plhiYPlane[3]=200;
-  Double_t chisqrYPlane;
-  Int_t    ndfYPlane;
-  TF1 *fitsnrYPlane = langaufit(hYPlanedQdxAllWires,frYPlane,svYPlane,plloYPlane,plhiYPlane,fpYPlane,fpeYPlane,&chisqrYPlane,&ndfYPlane);
-  Double_t SNRPeakYPlane, SNRFWHMYPlane;
-  langaupro(fpYPlane,SNRPeakYPlane,SNRFWHMYPlane);
-  hYPlanedQdxAllWires->Draw();
-  fitsnrYPlane->Draw("SAME");
-  c1->Print("YPlanedQdxAllWires.png");
-  c1->Print("YPlanedQdxAllWires.C");
-  // Determine the correction
-  for(auto channelTodQdxItr = channelTodQdxYPlane.begin(); 
-      channelTodQdxItr != channelTodQdxYPlane.end();
+  // Double_t frYPlane[2];
+  // Double_t svYPlane[4], plloYPlane[4], plhiYPlane[4], fpYPlane[4], fpeYPlane[4];
+  // frYPlane[0]=250; frYPlane[1]=2000;
+  // svYPlane[0]=30;
+  // plloYPlane[0]=10; plhiYPlane[0]=50;
+  // svYPlane[1]=0.8*hYPlanedQdxAllWires->GetMean();
+  // plloYPlane[1]=0.6*hYPlanedQdxAllWires->GetMean(); plhiYPlane[1]=1.0*hYPlanedQdxAllWires->GetMean(); 
+  // svYPlane[2]=50000.0; 
+  // plloYPlane[2]=1.0; plhiYPlane[2]=1e10; 
+  // svYPlane[3]=100;
+  // plloYPlane[3]=1; plhiYPlane[3]=200;
+  // Double_t chisqrYPlane;
+  // Int_t    ndfYPlane;
+  // TF1 *fitsnrYPlane = langaufit(hYPlanedQdxAllWires,frYPlane,svYPlane,plloYPlane,plhiYPlane,fpYPlane,fpeYPlane,&chisqrYPlane,&ndfYPlane);
+  // Double_t SNRPeakYPlane, SNRFWHMYPlane;
+  // langaupro(fpYPlane,SNRPeakYPlane,SNRFWHMYPlane);
+  // hYPlanedQdxAllWires->Draw();
+  // fitsnrYPlane->Draw("SAME");
+  // c1->Print("YPlanedQdxAllWires.png");
+  // c1->Print("YPlanedQdxAllWires.C");
+  // // Determine the correction
+  // for(auto channelTodQdxItr = channelTodQdxYPlane.begin(); 
+  //     channelTodQdxItr != channelTodQdxYPlane.end();
+  //     channelTodQdxItr++){
+  //   if(channelTodQdxItr->second < 0){
+  //     std::cout << "Channel: " << channelTodQdxItr->first 
+  //       << " Channel dQ/dx: " << channelTodQdxItr->second
+  //       << " Correction: " 
+  //       << 1 
+  //       << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << 1 << std::endl;
+  //     continue;
+  //   }
+  //   std::cout << "Channel: " << channelTodQdxItr->first 
+  //     << " Channel dQ/dx: " << channelTodQdxItr->second
+  //     << " Correction: " 
+  //     << fpYPlane[1]/channelTodQdxItr->second 
+  //     << std::endl;
+  //     dQdxCalibration << channelTodQdxItr->first << " " << fpYPlane[1]/channelTodQdxItr->second << std::endl;
+  // }
+
+
+
+
+
+
+
+
+  // Average the MPVs for all planes
+  // For the array, elements 0, 1, 2 are for U, V, Y planes respectively
+  Double_t meanMPVForPlane[3] = {0};
+  Int_t nMPVForPlane[3] = {0};
+  for(auto channelTodQdxItr = channelTodQdx.begin(); 
+      channelTodQdxItr != channelTodQdx.end();
+      channelTodQdxItr++){
+    if(channelTodQdxItr->second < 0){
+      continue;
+    }
+    meanMPVForPlane[ChannelToPlane(channelTodQdxItr->first)]+=channelTodQdxItr->second;
+    nMPVForPlane[ChannelToPlane(channelTodQdxItr->first)]++;
+  }
+  if(nMPVForPlane[0]!=0) meanMPVForPlane[0]/=nMPVForPlane[0];
+  if(nMPVForPlane[1]!=0) meanMPVForPlane[1]/=nMPVForPlane[1];
+  if(nMPVForPlane[2]!=0) meanMPVForPlane[2]/=nMPVForPlane[2];
+
+
+  for(auto channelTodQdxItr = channelTodQdx.begin(); 
+      channelTodQdxItr != channelTodQdx.end();
       channelTodQdxItr++){
     if(channelTodQdxItr->second < 0){
       std::cout << "Channel: " << channelTodQdxItr->first 
@@ -643,18 +706,13 @@ void dQdxFitter(){
     std::cout << "Channel: " << channelTodQdxItr->first 
       << " Channel dQ/dx: " << channelTodQdxItr->second
       << " Correction: " 
-      << fpYPlane[1]/channelTodQdxItr->second 
+      <<  meanMPVForPlane[ChannelToPlane(channelTodQdxItr->first)]/channelTodQdxItr->second
       << std::endl;
-      dQdxCalibration << channelTodQdxItr->first << " " << fpYPlane[1]/channelTodQdxItr->second << std::endl;
+      dQdxCalibration << channelTodQdxItr->first << " " << meanMPVForPlane[ChannelToPlane(channelTodQdxItr->first)]/channelTodQdxItr->second << std::endl;
   }
 
+
   dQdxCalibration.close();
-
-
-
-
-
-
 
 }
 

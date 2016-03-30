@@ -236,14 +236,6 @@ void AnaTreeLoop::Loop()
    size_t nEvtsProcessed = 0;
    size_t nEvtsFiredPMTTrigger = 0;
 
-   // Reality check
-   size_t nRealityEvts0 = 0;
-   // size_t nRealityEvts1 = 0;
-   // size_t nRealityEvts2 = 0;
-   // size_t nRealityEvts3 = 0;
-   // size_t nTracksVertexMatched = 0;
-   // size_t nTracksVertexLengthMatched = 0;
-
    if (fChain == 0) return;
 
    size_t nEvtsLongestTrackNu = 0;
@@ -480,7 +472,6 @@ void AnaTreeLoop::Loop()
             min_z_dist = std::abs(fTPC[5]-ana_tree_tracks->StartZ(longestTrackIndexNuGTFM));
          if(min_z_dist > std::abs(fTPC[5]-ana_tree_tracks->EndZ(longestTrackIndexNuGTFM))) 
             min_z_dist = std::abs(fTPC[5]-ana_tree_tracks->EndZ(longestTrackIndexNuGTFM));
-         double min_to_a_boundary_dist = std::min(min_z_dist, std::min(min_y_dist,min_x_dist));
          // get distance to closest tagged cosmic track 
          double shortestTrackDistance = 999999;
          for (short j=0; j< ana_tree_tracks->NTracks(); j++){
@@ -522,7 +513,6 @@ void AnaTreeLoop::Loop()
             min_z_dist = std::abs(fTPC[5]-ana_tree_tracks->StartZ(longestTrackIndexCosGTFM));
          if(min_z_dist > std::abs(fTPC[5]-ana_tree_tracks->EndZ(longestTrackIndexCosGTFM))) 
             min_z_dist = std::abs(fTPC[5]-ana_tree_tracks->EndZ(longestTrackIndexCosGTFM));
-         double min_to_a_boundary_dist = std::min(min_z_dist, std::min(min_y_dist,min_x_dist));
          // get distance to closest tagged cosmic track 
          double shortestTrackDistance = 999999;
          for (short j=0; j< ana_tree_tracks->NTracks(); j++){

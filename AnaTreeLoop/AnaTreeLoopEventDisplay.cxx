@@ -27,9 +27,6 @@ void AnaTreeLoopEventDisplay::Loop()
    ana_tree_hits = new AnaTreeHits(fChain);
    ana_tree_tracks = new AnaTreeTracks(fChain,fTrackModuleName);
 
-   // Setup an array for the TPC boundary 
-   double fTPC[6] = {0.,-116., 0.,256.,116.,1060.};
-
    size_t nEvtsProcessed = 0;
 
    if (fChain == 0) return;

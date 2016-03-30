@@ -17,10 +17,6 @@ void AnaTreeLoopDataStability::Loop()
    // Setup stopwatch
    TStopwatch *stopwatch = new TStopwatch();
 
-   // Setup an array for the TPC boundary 
-   double fTPC[6] = {0.,-116., 0.,256.,116.,1036.8};
-
-
    Double_t EventTime = 0;
    Long64_t NTotalHitsInPlane = 0;
    Long64_t NTotalHitsNoPlane = 0;

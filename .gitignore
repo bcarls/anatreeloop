@@ -37,4 +37,5 @@
 *.d
 *.pcm
 *.png
+*.eps
 *.root

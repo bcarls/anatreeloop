@@ -68,26 +68,12 @@ void AnaTreeLoopMCStudy::Loop()
    ana_tree_mctracks = new AnaTreeMCTracks(fChain);
    ana_tree_truth = new AnaTreeTruth(fChain);
 
-
-   // Setup an array for the TPC boundary 
-   double fTPC[6] = {0.,-116., 0.,256.,116.,1060.};
-
    size_t nEvtsProcessed = 0;
-   size_t nEvtsFiredPMTTrigger = 0;
 
-   // Reality check
-   size_t nRealityEvts0 = 0;
-   // size_t nRealityEvts1 = 0;
-   // size_t nRealityEvts2 = 0;
-   // size_t nRealityEvts3 = 0;
    // size_t nTracksVertexMatched = 0;
    // size_t nTracksVertexLengthMatched = 0;
 
    if (fChain == 0) return;
-
-   size_t nEvtsLongestTrackNu = 0;
-   size_t nEvtsLongestTrackCos = 0;
-   size_t nEvtsLongestTrackAll = 0;
 
    Long64_t nentries = fChain->GetEntries();
    Long64_t nbytes = 0, nb = 0;
@@ -122,17 +108,17 @@ void AnaTreeLoopMCStudy::Loop()
                      ){
                   hTrackLengthRecoVsTrue->Fill(ana_tree_mctracks->LengthDrifted(j), ana_tree_tracks->Length(i));
                double TrueStartX = std::min(ana_tree_mctracks->StartX(i),ana_tree_mctracks->EndX(i));
-               double TrueEndX = std::max(ana_tree_mctracks->StartX(i),ana_tree_mctracks->EndX(i));
-               double TrueStartY = std::min(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
-               double TrueEndY = std::max(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
-               double TrueStartZ = std::min(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
-               double TrueEndZ = std::max(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
-               double RecoStartX = std::min(ana_tree_tracks->StartX(i),ana_tree_tracks->EndX(i));
+               // double TrueEndX = std::max(ana_tree_mctracks->StartX(i),ana_tree_mctracks->EndX(i));
+               // double TrueStartY = std::min(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
+               // double TrueEndY = std::max(ana_tree_mctracks->StartY(i),ana_tree_mctracks->EndY(i));
+               // double TrueStartZ = std::min(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
+               // double TrueEndZ = std::max(ana_tree_mctracks->StartZ(i),ana_tree_mctracks->EndZ(i));
+               // double RecoStartX = std::min(ana_tree_tracks->StartX(i),ana_tree_tracks->EndX(i));
                double RecoEndX = std::max(ana_tree_tracks->StartX(i),ana_tree_tracks->EndX(i));
-               double RecoStartY = std::min(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
-               double RecoEndY = std::max(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
-               double RecoStartZ = std::min(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
-               double RecoEndZ = std::max(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
+               // double RecoStartY = std::min(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
+               // double RecoEndY = std::max(ana_tree_tracks->StartY(i),ana_tree_tracks->EndY(i));
+               // double RecoStartZ = std::min(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
+               // double RecoEndZ = std::max(ana_tree_tracks->StartZ(i),ana_tree_tracks->EndZ(i));
                hTrackXEndPointDiff->Fill(std::abs(TrueStartX-RecoEndX));
                
                

@@ -6,15 +6,12 @@ import sys
 
 def main(argv):
 
-    ROOT.gROOT.ProcessLine(".L AnaTreeTracks.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeVertex.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeTruth.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeAlgs.cxx");
-    ROOT.gROOT.ProcessLine(".L AnaTreeLoopMVATreeProducer.cxx");
+    ROOT.gSystem.Load("build/AnaTreeLoop/libAnaTreeLoop")
 
     inputFile = ''
     inputFileList = ''
     nevts = 0
+    evttostart = 0
     # Parse arguments
     args = argv[1:]
     while len(args) > 0:
@@ -29,6 +26,10 @@ def main(argv):
         elif args[0] == '-n' or args[0] == '--nevts' :
             if len(args) > 1:
                 nevts = int(args[1])
+                del args[0:2]
+        elif args[0] == '--evttostart':
+            if len(args) > 1:
+                evttostart = int(args[1])
                 del args[0:2]
 
     if inputFile == '' and inputFileList == '':
@@ -49,18 +50,19 @@ def main(argv):
         print 'Adding input file: '+f+'.'
         c.Add(f)
 
-    t = ROOT.AnaTreeLoopMVATreeProducer(c)
+    t = ROOT.AnaTreeLoopMVATreeProducerDemo(c)
 
     t.SetNEvents(nevts)
+    t.SetEventToStart(evttostart)
     t.SetNEventsToReport(1000)
     t.SetTrackModule("trackkalmanhit")
     # t.SetTrackModule("pandoraCosmicKHit")
 
-    t.SetOutputFile("AnaTreeLoopMVATreeProducer.root")
+    t.SetOutputFile("AnaTreeLoopMVATreeProducerDemo.root")
+    t.SetOutputTreeFile("ToRead.root")
     # t.SetOutputTreeFile("Neutrino_Signal.root")
-    t.SetOutputTreeFile("Cosmic_Background.root")
+    # t.SetOutputTreeFile("Cosmic_Background.root")
     t.Loop()
-
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

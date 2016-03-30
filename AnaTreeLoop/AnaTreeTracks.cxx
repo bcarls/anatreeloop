@@ -31,9 +31,9 @@ AnaTreeTracks::AnaTreeTracks(TTree *fChain,TString fTrackModule) {
    fChain->SetBranchStatus("trkorigin_"+fTrackModule,1);
    fChain->SetBranchStatus("trkpidbestplane_"+fTrackModule,1);
    fChain->SetBranchStatus("ntrkhits_"+fTrackModule,1);
-   fChain->SetBranchStatus("trkdedx_"+fTrackModule,1);
-   fChain->SetBranchStatus("trkdqdx_"+fTrackModule,1);
-   fChain->SetBranchStatus("trkxyz_"+fTrackModule,1);
+   // fChain->SetBranchStatus("trkdedx_"+fTrackModule,1);
+   // fChain->SetBranchStatus("trkdqdx_"+fTrackModule,1);
+   // fChain->SetBranchStatus("trkxyz_"+fTrackModule,1);
    
    fChain->SetBranchAddress("ntracks_"+fTrackModule,&fNTracks);
    fChain->SetBranchAddress("trkId_"+fTrackModule,&fID);
@@ -62,9 +62,9 @@ AnaTreeTracks::AnaTreeTracks(TTree *fChain,TString fTrackModule) {
    fChain->SetBranchAddress("trkorigin_"+fTrackModule,&fOrigin);
    fChain->SetBranchAddress("trkpidbestplane_"+fTrackModule,&fPIDBestPlane);
    fChain->SetBranchAddress("ntrkhits_"+fTrackModule,&fNTrackHits);
-   fChain->SetBranchAddress("trkdedx_"+fTrackModule,&fTrackHitdEdx);
-   fChain->SetBranchAddress("trkdqdx_"+fTrackModule,&fTrackHitdQdx);
-   fChain->SetBranchAddress("trkxyz_"+fTrackModule,&fTrackHitXYZ);
+   // fChain->SetBranchAddress("trkdedx_"+fTrackModule,&fTrackHitdEdx);
+   // fChain->SetBranchAddress("trkdqdx_"+fTrackModule,&fTrackHitdQdx);
+   // fChain->SetBranchAddress("trkxyz_"+fTrackModule,&fTrackHitXYZ);
    
 }
 

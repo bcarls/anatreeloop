@@ -1,9 +1,0 @@
-/Users/bcarls/cosmic_data_anatree/run3747/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3774/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3780/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3788/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3795/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3804/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3812/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3822/anahist.root
-/Users/bcarls/cosmic_data_anatree/run3827/anahist.root
