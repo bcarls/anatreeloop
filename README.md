@@ -1,3 +1,6 @@
+# This is depreciated, go to GitLab
+
+
 # AnaTreeLoop
 
 This is a simple set of macros for looking at AnalysisTree files. It is currently configured to use ROOT 6 and relies on CMake for building. Compilation is not necessary though. Details on avoiding it appear below. 
